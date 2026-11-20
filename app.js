@@ -307,7 +307,7 @@
 
   /* ---------- 側欄與路由 ---------- */
   function renderSide(active) {
-    $('#side').innerHTML = `<a href="#home" class="${active === 'home' ? 'on' : ''}">${svg('home')}總覽</a><a href="#studio" class="${active === 'studio' ? 'on' : ''}">${svg('rocket')}簡報工作室</a><a href="#pick/templates" class="${active === 'pick' ? 'on' : ''}">${svg('search')}一覽挑選</a><div class="sep">素材分類</div>` +
+    $('#side').innerHTML = `<a href="#home" class="${active === 'home' ? 'on' : ''}">${svg('home')}總覽</a><a href="#studio" class="${active === 'studio' ? 'on' : ''}">${svg('rocket')}簡報工作室</a><a href="#pick/templates" class="${active === 'pick' ? 'on' : ''}">${svg('search')}一覽挑選</a><a href="image.html">${svg('image')}圖片生成素材庫</a><a href="video.html">${svg('play')}影片生成素材庫</a><div class="sep">素材分類</div>` +
       CATS.map(c => `<a href="#${c.k}" class="${active === c.k ? 'on' : ''}">${svg(c.ic)}${c.n}<span class="n">${LIB.items[c.k].length}</span></a>`).join('');
   }
   $('#menuBtn').onclick = () => { $('#side').classList.toggle('open'); };
@@ -361,7 +361,7 @@
   }
   function renderHome() {
     const total = ALL.length;
-    $('#view').innerHTML = `<section class="hero"><h1>簡報素材庫</h1><p>共 <b>${CATS.length}</b> 類、<b>${total}</b> 個網頁簡報素材。每個素材都附有預覽和可直接使用的程式碼。按「複製給 Claude」，貼進對話就能請 Claude 幫你做簡報；也可以在「簡報工作室」直接組成一份能播放、能下載的網頁簡報。</p><div class="row"><a class="btn primary" href="#studio">開始做簡報</a><a class="btn" href="#pick/templates">一覽挑選所有風格</a><a class="btn" href="#templates">瀏覽模板</a><a class="btn" href="#interactive">看互動元件</a></div></section>
+    $('#view').innerHTML = `<section class="hero"><h1>簡報素材庫</h1><p>共 <b>${CATS.length}</b> 類、<b>${total}</b> 個網頁簡報素材。每個素材都附有預覽和可直接使用的程式碼。按「複製給 Claude」，貼進對話就能請 Claude 幫你做簡報；也可以在「簡報工作室」直接組成一份能播放、能下載的網頁簡報。</p><div class="row"><a class="btn primary" href="#studio">開始做簡報</a><a class="btn" href="#pick/templates">一覽挑選所有風格</a><a class="btn" href="image.html">圖片生成素材庫</a><a class="btn" href="video.html">影片生成素材庫</a><a class="btn" href="#interactive">看互動元件</a></div></section>
       <div class="howto"><div><b>① 挑素材</b><p>在各分類點預覽可以看大圖、程式碼；滑鼠移到轉場和動畫上會自動播放。</p></div><div><b>② 複製或加入素材籃</b><p>單個素材按「複製給 Claude」；想一次用很多個，就先加入素材籃，再一鍵複製全部。</p></div><div><b>③ 貼到對話或工作室</b><p>貼進 Claude 對話說「幫我用這些素材做簡報」，或在工作室用簡單語法直接排版、播放、下載。</p></div></div>
       <h2 class="sec">素材分類</h2><div class="cat-grid">${CATS.map(c => `<a class="cat-card" href="#${c.k}"><i>${svg(c.ic, 22)}</i><div><b>${c.n}<span>${LIB.items[c.k].length} 個</span>${c.isNew ? '<em class="new">新增</em>' : ''}</b><p>${c.d}</p></div></a>`).join('')}</div>`;
   }

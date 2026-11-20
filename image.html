@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>圖片生成素材庫</title>
+<meta name="description" content="AI 圖片生成提示詞素材庫：畫風、景別、角度、構圖、光線、色調、鏡頭、氛圍、比例與負面提示，點選組合出中英文提示詞。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="app.css?v=8">
+<link rel="stylesheet" href="gen.css?v=2">
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="index.html"><span class="logo-mark">S</span><span>圖片生成素材庫</span></a>
+  <nav class="g-nav" aria-label="素材庫切換"><a href="index.html">簡報素材</a><a href="image.html" class="on">圖片生成</a><a href="video.html">影片生成</a></nav>
+</header>
+<div class="g-layout">
+  <nav class="g-side" id="gSide" aria-label="類別"></nav>
+  <main class="g-main">
+    <div class="g-subject"><label for="gSubject">畫面主體</label><input id="gSubject" type="text" placeholder="例如：一位微笑的阿嬤在社區公園打太極"></div>
+    <div id="gHead"></div>
+    <div id="gGrid"></div>
+  </main>
+  <aside class="g-dock" id="gDock" aria-label="提示詞">
+    <h3>你的提示詞 <button class="btn sm" id="gDockToggle" type="button">展開／收合</button></h3>
+    <div class="g-chips" id="gChips"></div>
+    <h4>中文設定</h4>
+    <pre class="g-out" id="gZh"></pre>
+    <h4>ENGLISH PROMPT</h4>
+    <pre class="g-out" id="gEn"></pre>
+    <div id="gNegWrap"><h4>負面提示 NEGATIVE</h4><pre class="g-out" id="gNeg"></pre></div>
+    <div class="g-acts">
+      <button class="btn primary" id="gCopyClaude" type="button">複製給 Claude 幫我生成</button>
+      <button class="btn" id="gCopyEn" type="button">複製英文提示詞</button>
+      <button class="btn" id="gCopyZh" type="button">複製中文設定</button>
+      <button class="btn" id="gCopyNeg" type="button">複製負面提示</button>
+      <button class="btn danger" id="gClear" type="button">全部清除</button>
+    </div>
+  </aside>
+</div>
+<div class="toast" id="toast"></div>
+<script src="data-image.js?v=1"></script>
+<script src="gen.js?v=3"></script>
+<script src="https://mattsue1003.github.io/oth-report-button/report.js" data-site="圖片生成素材庫" defer></script>
+<script>
+window.addEventListener('load',function(){
+  (function shrink(n){
+    var host=document.querySelector('[data-oth-report]');
+    if(!host||!host.shadowRoot){if(n<20)setTimeout(function(){shrink(n+1)},300);return}
+    var s=document.createElement('style');
+    s.textContent='.fab{left:14px!important;right:auto!important;bottom:84px!important;width:34px!important;height:34px!important;min-width:0!important;padding:0!important;gap:0!important;justify-content:center!important;border-radius:50%!important;overflow:hidden!important;font-size:0!important;white-space:nowrap!important;opacity:.75}.fab svg{width:16px!important;height:16px!important;flex:none;margin:0!important}@media (min-width:901px){.fab{bottom:14px!important}}@media (hover:hover){.fab:hover{width:auto!important;padding:0 14px!important;gap:6px!important;font-size:13px!important;border-radius:99px!important;opacity:1}}';
+    host.shadowRoot.appendChild(s);
+  })(0);
+});
+</script>
+</body>
+</html>
