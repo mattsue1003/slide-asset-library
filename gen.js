@@ -22,8 +22,10 @@
   const PERSON = `<g fill="#3b4a5a"><circle cx="50" cy="30" r="18"/><path d="M42 46h16v10H42z"/><path d="M14 150 C14 78,30 58,50 58 C70 58,86 78,86 150z"/><rect x="28" y="148" width="18" height="92" rx="7"/><rect x="54" y="148" width="18" height="92" rx="7"/></g><g fill="#fff"><circle cx="43" cy="28" r="2.4"/><circle cx="57" cy="28" r="2.4"/></g><path d="M43 37 Q50 42 57 37" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>`;
   const CAM = (x, y, r) => `<g transform="translate(${x} ${y}) rotate(${r || 0})"><rect x="-9" y="-6" width="14" height="12" rx="2" fill="#c2410c"/><path d="M5 -4 L11 -7 V7 L5 4z" fill="#c2410c"/></g>`;
 
+  const SAMPLE = new Set(G.samples || []);
   function preview(it) {
     const p = it.pv || {}, t = p.t || CAT[it.cat].pv;
+    if (SAMPLE.has(it.id)) return `<img class="g-img" src="samples/${it.id}.webp" alt="${esc(it.name)}範例" loading="lazy" width="480" height="320"><span class="g-src">${esc(G.sampleBy?.[it.cat] || 'AI 範例')}</span>`;
     if (t === 'filter') return `<div class="g-scene" style="filter:${p.filter || 'none'}">${SCENE}${p.overlay ? `<i class="g-ov" style="background:${p.overlay};mix-blend-mode:${p.blend || 'soft-light'}"></i>` : ''}</div>`;
     if (t === 'fx') return `<div class="g-scene">${SCENE}<i class="g-ov fx-${it.id}" style="${esc(p.ov || '')}"></i></div>`;
     if (t === 'light') return `<div class="g-light" style="background:${p.bg}"><i style="${p.ball}"></i></div>`;

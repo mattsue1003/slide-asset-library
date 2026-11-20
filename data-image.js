@@ -178,6 +178,8 @@
   window.GEN = {
     kind: 'image',
     sampleSubject: '一位微笑的阿嬤在社區公園打太極',
+    samples: ['lt-backlit','lt-blue','lt-candle','lt-dappled','lt-golden','lt-hard','lt-highkey','lt-lowkey','lt-neon','lt-overcast','lt-rembrandt','lt-silhouette','lt-soft','lt-studio','lt-window','st-3d-cute','st-cinematic','st-clay','st-collage','st-colored-pencil','st-documentary','st-editorial','st-film','st-flat','st-icon','st-ink','st-isometric','st-japanese','st-line','st-oil','st-paper-cut','st-photo','st-picture-book','st-product','st-retro-poster','st-risograph','st-watercolor'],
+    sampleBy: { styles: 'ChatGPT 生成', lighting: 'Nano Banana 生成' },
     cats: [
       { k: 'presets', n: '用途模板', pv: 'preset', mode: 'single', d: '一鍵套用整組設定，再逐類微調' },
       { k: 'styles', n: '畫風', pv: 'tag', mode: 'single', d: '整張圖的視覺風格' },
