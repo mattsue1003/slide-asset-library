@@ -13,9 +13,14 @@
     { k: 'fonts', n: '字型', ic: 'book', kind: 'font', d: '繁中、日文、英文 Google Fonts，可直接連結使用' },
     { k: 'palettes', n: '配色方案', ic: 'sun', kind: 'palette', isNew: 1, d: '五色一組：底色、輔色、主色、強調、文字' },
     { k: 'backgrounds', n: '背景', ic: 'cloud', kind: 'bg', isNew: 1, d: '漸層、圖樣、紙質紋理、會動的背景' },
+    { k: 'titleEffects', n: '標題文字效果', ic: 'flag', kind: 'tstyle', wide: 1, isNew: 1, d: '陰影、空心、漸層、螢光筆、色塊、手繪底線…' },
+    { k: 'bullets', n: '項目符號', ic: 'check', kind: 'tstyle', wide: 1, isNew: 1, d: '圓點、勾勾、數字、箭頭、卡片式條列' },
+    { k: 'imageStyles', n: '圖片樣式', ic: 'camera', kind: 'tstyle', wide: 1, isNew: 1, d: '圓角、圓形、拱形、拍立得、黑白、復古、柔焦' },
     { k: 'layouts', n: '版面配置', ic: 'sliders', kind: 'layout', wide: 1, isNew: 1, d: '封面、雙欄、圖文、數據、團隊、感謝頁等排版' },
     { k: 'transitions', n: '轉場', ic: 'arrow-right', kind: 'transition', d: '換頁效果：推移、翻轉、擦拭、圓形展開…' },
     { k: 'animations', n: '畫面動畫', ic: 'play', kind: 'anim', d: '元素進場、強調、循環動畫' },
+    { k: 'easings', n: '動畫節奏', ic: 'trend', kind: 'easing', isNew: 1, d: '同一個動作用不同速度曲線：平穩、加速、彈性、回彈' },
+    { k: 'sequences', n: '出現順序', ic: 'clock', kind: 'seq', wide: 1, isNew: 1, d: '同一頁元素一起出現、逐一出現、點一下出現…' },
     { k: 'textboxes', n: '文字方塊', ic: 'chat', kind: 'block', w: 480, d: '便利貼、對話框、提示框、引言、標籤…' },
     { k: 'shapes', n: '形狀裝飾', ic: 'star', kind: 'block', w: 440, isNew: 1, d: '分隔線、色塊、徽章、箭頭、框線、點綴' },
     { k: 'icons', n: '圖示', ic: 'smile', kind: 'icon', isNew: 1, d: '線條 SVG 圖示，含醫療、生活、商務' },
@@ -74,6 +79,13 @@
     }
     else if (c === 'animations') { s.css = it.css; s.html = it.html; s.usage = `把 class「${it.id}」加到要動的元素；要依序出現可加 style="animation-delay:.2s"。`; }
     else if (c === 'icons') { s.html = it.html; s.usage = '線條圖示，顏色跟著文字顏色（color），可直接改 width / height。'; }
+    else if (c === 'titleEffects' || c === 'bullets' || c === 'imageStyles') {
+      const what = { titleEffects: '標題 <h1>', bullets: '條列 <ul><li>', imageStyles: '圖片 <img>' }[c];
+      s.css = it.css; s.html = { titleEffects: `<section class="slide ${it.id}">\n  <h1>投影片標題</h1>\n</section>`, bullets: `<section class="slide ${it.id}">\n  <ul><li>重點一</li><li>重點二</li><li>重點三</li></ul>\n</section>`, imageStyles: `<section class="slide ${it.id}">\n  <img src="照片網址" alt="說明">\n</section>` }[c];
+      s.usage = `在投影片 <section class="slide"> 加上 class「${it.id}」，就會套用到該頁直接層的${what}（需搭配模板的 .slide 基礎樣式與 --accent 變數）。`;
+    }
+    else if (c === 'easings') { s.css = it.css; s.usage = `速度曲線「${it.name}」：在任何 animation 或 transition 後面寫 ${it.value}，例如 animation: fadeUp .8s ${it.value} both;`; }
+    else if (c === 'sequences') { s.js = it.js; s.usage = it.click ? '換頁時先呼叫 sequenceStart(slide)；按「下一頁」時先呼叫 sequenceNext(slide)，回傳 false 才真的換頁。' : `換到投影片時呼叫 applySequence(slide)，每個 class="anim" 的元素會依「${it.name}」錯開出現。`; }
     else if (c === 'sounds') { s.js = it.js; s.usage = `呼叫 ${it.fn}() 就會播放（需在使用者點擊之後才能發聲）。`; }
     else { s.css = it.css || ''; s.html = it.html || ''; s.js = it.js || ''; s.usage = it.js ? '把 CSS、HTML、JS 一起放進簡報即可使用，可重複放多個。' : '把 CSS 放進 <style>，HTML 放進投影片即可。'; }
     return s;
@@ -101,6 +113,13 @@
         : `<div class="slide tp-minimal">${it.html}</div>`;
       el.innerHTML = `<div class="slidebox z">${inner}</div>`;
       el.dataset.fit = 'slide';
+    } else if (c.kind === 'tstyle' || c.kind === 'seq') {
+      el.classList.add('slidepv');
+      el.innerHTML = `<div class="slidebox z">${composeSlide({ [{ titleEffects: 'te', bullets: 'bl', imageStyles: 'im', sequences: 'sq' }[it.cat]]: it.id }, { img: it.cat === 'imageStyles', seq: c.kind === 'seq', focus: it.cat === 'titleEffects' ? 'title' : it.cat === 'bullets' ? 'list' : '' })}</div>`;
+      el.dataset.fit = 'slide';
+      if (c.kind === 'seq') { const rp = () => seqPlay(it, el); el.addEventListener('mouseenter', rp); if (big) { rp(); el._iv = setInterval(rp, 4200); } else setTimeout(rp, 300); }
+    } else if (c.kind === 'easing') {
+      el.innerHTML = `<div class="ez-demo z">${ezCurve(it)}<div class="ez-track"><i style="animation-timing-function:${it.value}"></i></div><code>${esc(it.value.length > 28 ? it.value.slice(0, 26) + '…)' : it.value)}</code></div>`;
     } else if (c.kind === 'font') {
       el.innerHTML = `<div class="font-pv z ${it.id}"><div class="big">永遠的好朋友</div><div class="big" style="font-size:26px">Slide Deck 2026</div><div class="small">${esc(it.family)}</div></div>`;
     } else if (c.kind === 'palette') {
@@ -127,6 +146,38 @@
       if (it.cat === 'shapes' || it.cat === 'textboxes') el.classList.add('checker');
     }
     requestAnimationFrame(() => fit(el));
+  }
+  /* 依目前選擇組合一張示範投影片：o = { tp, pl, bg, hf, bf, te, bl, im } */
+  function composeSlide(o, opt = {}) {
+    const tp = o.tp || 'tp-minimal', pl = BY_ID[o.pl], hf = BY_ID[o.hf], bf = BY_ID[o.bf];
+    const cls = ['slide', tp, o.bg, o.te, o.bl, o.im, opt.focus === 'title' ? 'title-slide' : ''].filter(Boolean).join(' ');
+    let st = '';
+    if (pl) st += `--bg:${pl.colors[0]};--surface:${pl.colors[1]};--accent:${pl.colors[2]};--accent2:${pl.colors[3]};--fg:${pl.colors[4]};--muted:${pl.colors[4]}cc;`;
+    if (hf) st += `--hf:'${hf.family}',sans-serif;`;
+    if (bf) st += `--bf:'${bf.family}',sans-serif;`;
+    const t = esc(opt.text || pickState().text || '健康生活小學堂'), q = opt.seq ? ' class="sq-el"' : '';
+    if (opt.img) st += 'display:grid;grid-template-columns:1fr auto;align-content:center;column-gap:56px;row-gap:22px;';
+    const img = opt.img ? `<img src="${LIB.sampleImg}" alt="範例圖片" style="grid-column:2;grid-row:1/span 2;height:380px;align-self:center">` : '';
+    if (opt.focus === 'title') return `<div class="${cls}" style="${st}"><h1 style="font-size:112px">${t}</h1><p style="font-size:34px">副標題・2026 社區講座</p></div>`;
+    if (opt.focus === 'list') return `<div class="${cls}" style="${st}"><h2 style="font-size:44px">${t}</h2><ul style="font-size:66px;gap:28px"><li>規律運動</li><li>均衡飲食</li><li>充足睡眠</li></ul></div>`;
+    return `<div class="${cls}" style="${st}"><h1${q}>${t}</h1><ul><li${q}>規律運動，每天 30 分鐘</li><li${q}>均衡飲食，少油少鹽</li><li${q}>充足睡眠，作息規律</li></ul>${img}</div>`;
+  }
+  function seqPlay(it, root, speed = 1, an, ez) {
+    const els = $$('.sq-el', root), n = els.length, f = new Function('i', 'n', 'return ' + it.fn);
+    const A = an || BY_ID['an-fade-up'];
+    els.forEach((e, i) => {
+      e.style.animation = 'none'; void e.offsetWidth;
+      const d = it.click ? (i === 0 ? .2 : .2 + i * .9) : f(i, n);
+      e.style.animation = `${A.id}-kf ${A.dur * speed}s ${ez ? ez.value : A.ease} ${d * speed}s both`;
+    });
+  }
+  function ezCurve(it) {
+    const Y = v => (100 - v * 100).toFixed(1);
+    let path = '';
+    if (it.bz) { const [a, b, c, d] = it.bz; path = `<path d="M0 100 C${a * 100} ${Y(b)} ${c * 100} ${Y(d)} 100 0" />`; }
+    else if (it.value.startsWith('linear(')) { const v = it.value.slice(7, -1).split(',').map(Number); path = `<polyline points="${v.map((y, i) => `${(i / (v.length - 1) * 100).toFixed(1)},${Y(y)}`).join(' ')}" />`; }
+    else { const n = +it.value.match(/\d+/)[0]; let d = 'M0 100'; for (let i = 0; i < n; i++) d += ` H${(i + 1) / n * 100} V${Y((i + 1) / n)}`; path = `<path d="${d}" />`; }
+    return `<svg class="ez-curve" viewBox="-6 -45 112 190"><rect x="0" y="0" width="100" height="100" fill="none" stroke="currentColor" stroke-opacity=".15"/><g fill="none" stroke="#8a5a32" stroke-width="3.5" stroke-linejoin="round">${path}</g></svg>`;
   }
   const ixObserver = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting && e.target.dataset.lazy) { e.target.srcdoc = ixDoc(e.target._it); delete e.target.dataset.lazy; ixObserver.unobserve(e.target); }
@@ -213,6 +264,7 @@
       if (it.cat === 'transitions') s.tr = it.id;
       if (it.cat === 'animations') s.an = it.id;
       if (it.cat === 'sounds') s.sx = it.id;
+      if (['titleEffects', 'bullets', 'imageStyles', 'easings', 'sequences'].includes(it.cat)) s[STYLE_KEY[it.cat]] = it.id;
     });
     const blocks = basket.filter(id => INSERTABLE.has(BY_ID[id].cat));
     if (blocks.length) s.src = s.src.trim() + '\n---\n# 素材籃的元件\n' + blocks.map(id => `[[${id}]]`).join('\n');
@@ -225,7 +277,7 @@
     current = it; const s = snippet(it);
     render(it, $('#modalPv'), true);
     $('#mName').textContent = it.name; $('#mId').textContent = it.id; $('#mDesc').textContent = it.desc || '';
-    const studioable = ['templates', 'fonts', 'palettes', 'backgrounds', 'transitions', 'animations', 'sounds'].includes(it.cat) || INSERTABLE.has(it.cat);
+    const studioable = STYLE_KEY[it.cat] || INSERTABLE.has(it.cat);
     $('#mActs').innerHTML = `<button class="btn primary cp">複製給 Claude</button><button class="btn add"></button>${studioable ? '<button class="btn use">用在簡報工作室</button>' : ''}${it.cat === 'sounds' ? '<button class="btn play">▶ 播放</button>' : ''}`;
     $('#mActs .cp').onclick = () => copy(promptFor(it));
     $('#mActs .add').onclick = () => toggleBasket(it.id);
@@ -255,7 +307,7 @@
 
   /* ---------- 側欄與路由 ---------- */
   function renderSide(active) {
-    $('#side').innerHTML = `<a href="#home" class="${active === 'home' ? 'on' : ''}">${svg('home')}總覽</a><a href="#studio" class="${active === 'studio' ? 'on' : ''}">${svg('rocket')}簡報工作室</a><a href="#pick/fonts" class="${active === 'pick' ? 'on' : ''}">${svg('search')}一覽挑選</a><div class="sep">素材分類</div>` +
+    $('#side').innerHTML = `<a href="#home" class="${active === 'home' ? 'on' : ''}">${svg('home')}總覽</a><a href="#studio" class="${active === 'studio' ? 'on' : ''}">${svg('rocket')}簡報工作室</a><a href="#pick/templates" class="${active === 'pick' ? 'on' : ''}">${svg('search')}一覽挑選</a><div class="sep">素材分類</div>` +
       CATS.map(c => `<a href="#${c.k}" class="${active === c.k ? 'on' : ''}">${svg(c.ic)}${c.n}<span class="n">${LIB.items[c.k].length}</span></a>`).join('');
   }
   $('#menuBtn').onclick = () => { $('#side').classList.toggle('open'); };
@@ -267,7 +319,7 @@
     $('#side').classList.remove('open');
     if (q) { renderSide(''); return renderSearch(q); }
     stopPick();
-    if (h.startsWith('pick')) { renderSide('pick'); return renderPick(h.split('/')[1] || 'fonts'); }
+    if (h.startsWith('pick')) { renderSide('pick'); return renderPick(h.split('/')[1] || 'templates'); }
     renderSide(h);
     if (h === 'studio') return renderStudio();
     if (CAT[h]) return renderCat(h);
@@ -309,12 +361,13 @@
   }
   function renderHome() {
     const total = ALL.length;
-    $('#view').innerHTML = `<section class="hero"><h1>簡報素材庫</h1><p>共 <b>${CATS.length}</b> 類、<b>${total}</b> 個網頁簡報素材。每個素材都附有預覽和可直接使用的程式碼。按「複製給 Claude」，貼進對話就能請 Claude 幫你做簡報；也可以在「簡報工作室」直接組成一份能播放、能下載的網頁簡報。</p><div class="row"><a class="btn primary" href="#studio">開始做簡報</a><a class="btn" href="#pick/fonts">一覽挑選字型／轉場／動畫</a><a class="btn" href="#templates">瀏覽模板</a><a class="btn" href="#interactive">看互動元件</a></div></section>
+    $('#view').innerHTML = `<section class="hero"><h1>簡報素材庫</h1><p>共 <b>${CATS.length}</b> 類、<b>${total}</b> 個網頁簡報素材。每個素材都附有預覽和可直接使用的程式碼。按「複製給 Claude」，貼進對話就能請 Claude 幫你做簡報；也可以在「簡報工作室」直接組成一份能播放、能下載的網頁簡報。</p><div class="row"><a class="btn primary" href="#studio">開始做簡報</a><a class="btn" href="#pick/templates">一覽挑選所有風格</a><a class="btn" href="#templates">瀏覽模板</a><a class="btn" href="#interactive">看互動元件</a></div></section>
       <div class="howto"><div><b>① 挑素材</b><p>在各分類點預覽可以看大圖、程式碼；滑鼠移到轉場和動畫上會自動播放。</p></div><div><b>② 複製或加入素材籃</b><p>單個素材按「複製給 Claude」；想一次用很多個，就先加入素材籃，再一鍵複製全部。</p></div><div><b>③ 貼到對話或工作室</b><p>貼進 Claude 對話說「幫我用這些素材做簡報」，或在工作室用簡單語法直接排版、播放、下載。</p></div></div>
       <h2 class="sec">素材分類</h2><div class="cat-grid">${CATS.map(c => `<a class="cat-card" href="#${c.k}"><i>${svg(c.ic, 22)}</i><div><b>${c.n}<span>${LIB.items[c.k].length} 個</span>${c.isNew ? '<em class="new">新增</em>' : ''}</b><p>${c.d}</p></div></a>`).join('')}</div>`;
   }
 
   /* ---------- 簡報工作室 ---------- */
+  const STYLE_KEY = { templates: 'tp', palettes: 'pl', backgrounds: 'bg', fonts: 'hf', titleEffects: 'te', bullets: 'bl', imageStyles: 'im', transitions: 'tr', animations: 'an', easings: 'ez', sequences: 'sq', sounds: 'sx' };
   const INSERTABLE = new Set(['textboxes', 'shapes', 'icons', 'charts', 'infographics', 'interactive', 'layouts']);
   const DEFAULT_SRC = `# 健康生活小學堂
 ## 2026 社區長者講座
@@ -337,12 +390,11 @@
 ---
 @bg bg-g-warm
 [[ly-thanks]]`;
-  const DEF = { tp: 'tp-beige', hf: '', bf: '', pl: '', bg: '', tr: 'tr-fade', an: 'an-fade-up', sx: '', pn: true, title: '我的網頁簡報', src: DEFAULT_SRC };
+  const DEF = { tp: 'tp-beige', hf: '', bf: '', pl: '', bg: '', tr: 'tr-fade', an: 'an-fade-up', sx: '', te: '', bl: '', im: '', ez: '', sq: '', pn: true, title: '我的網頁簡報', src: DEFAULT_SRC };
   const studioState = () => Object.assign({}, DEF, store.get('sal-studio', {}));
   function useInStudio(it) {
-    const s = studioState(), map = { templates: 'tp', palettes: 'pl', backgrounds: 'bg', transitions: 'tr', animations: 'an', sounds: 'sx' };
-    if (map[it.cat]) s[map[it.cat]] = it.id;
-    else if (it.cat === 'fonts') s.hf = it.id;
+    const s = studioState();
+    if (STYLE_KEY[it.cat]) s[STYLE_KEY[it.cat]] = it.id;
     else s.src = s.src.trim() + `\n---\n[[${it.id}]]`;
     store.set('sal-studio', s); closeModal(); location.hash = '#studio'; route(); toast('已套用到簡報工作室');
   }
@@ -388,6 +440,8 @@
     const tp = BY_ID[s.tp] || BY_ID['tp-minimal'];
     usedTp.add(tp.id); if (s.bg && BY_ID[s.bg]) usedBg.add(s.bg);
     const tr = BY_ID[s.tr] || BY_ID['tr-fade'], an = BY_ID[s.an], sx = BY_ID[s.sx], pl = BY_ID[s.pl];
+    const te = BY_ID[s.te], bl = BY_ID[s.bl], im = BY_ID[s.im], ez = BY_ID[s.ez], sq = BY_ID[s.sq] || BY_ID['sq-stagger'];
+    const extraCls = [te, bl, im].filter(Boolean).map(x => ' ' + x.id).join('');
     const hf = BY_ID[s.hf], bf = BY_ID[s.bf];
     const fams = new Set();
     usedTp.forEach(id => BY_ID[id].fonts.forEach(f => fams.add(f)));
@@ -403,19 +457,23 @@
       pl ? `.deck .slide{--bg:${pl.colors[0]};--surface:${pl.colors[1]};--accent:${pl.colors[2]};--accent2:${pl.colors[3]};--fg:${pl.colors[4]};--muted:${pl.colors[4]}cc}` : '',
       ...[...usedBg].map(id => { const b = BY_ID[id]; return `.deck .slide.${id}{background:${b.decl}}\n${b.extra.replace(new RegExp('\\.' + id + '\\{', 'g'), `.deck .slide.${id}{`)}`; }),
       tr.css,
-      an ? `@keyframes ${an.id}-kf{${an.kf}}\n.slide.play .anim{${an.pre}animation:${an.id}-kf ${an.dur}s ${an.ease} ${an.loop ? 'infinite' : 'both'};animation-delay:${an.loop ? '0s' : 'calc(var(--i) * .16s + .25s)'}}` : '',
+      ...[te, bl, im].filter(Boolean).map(x => x.css),
+      an ? `@keyframes ${an.id}-kf{${an.kf}}\n.slide.play .anim{${an.pre}animation:${an.id}-kf ${an.dur}s ${ez ? ez.value : an.ease} ${an.loop ? 'infinite' : 'both'};animation-delay:${an.loop ? '0s' : 'var(--d,0s)'}}` : '',
+      '.slide .anim.wait{visibility:hidden!important;animation:none!important}',
       ...[...used].map(id => BY_ID[id].css || ''),
       '.bar{position:fixed;left:0;bottom:0;height:4px;background:var(--bar,#c98b4e);transition:width .3s;z-index:5}',
       '.hint{position:fixed;right:14px;bottom:12px;font:12px system-ui,sans-serif;color:rgba(255,255,255,.45);z-index:5;pointer-events:none}',
       '@media print{html,body{overflow:visible;background:#fff}.deck{position:static;transform:none}.slide{display:flex!important;position:relative;page-break-after:always}.bar,.hint{display:none}}',
     ].filter(Boolean).join('\n');
     const N = slides.length;
-    const body = slides.map((sl, i) => `<section class="slide ${sl.tp || tp.id}${sl.bg ? ' ' + sl.bg : (s.bg ? ' ' + s.bg : '')}${sl.isTitle ? ' title-slide' : ''}${i === 0 ? ' active' : ''}">\n${sl.html}${s.pn && i > 0 ? `<div class="pageno">${i + 1} / ${N}</div>` : ''}\n</section>`).join('\n');
+    const body = slides.map((sl, i) => `<section class="slide ${sl.tp || tp.id}${extraCls}${sl.bg ? ' ' + sl.bg : (s.bg ? ' ' + s.bg : '')}${sl.isTitle ? ' title-slide' : ''}${i === 0 ? ' active' : ''}">\n${sl.html}${s.pn && i > 0 ? `<div class="pageno">${i + 1} / ${N}</div>` : ''}\n</section>`).join('\n');
     const js = `(function(){var D=document.querySelector('.deck'),S=[].slice.call(document.querySelectorAll('.slide')),cur=0,busy=0,TR=${JSON.stringify(tr.id)},DUR=${Math.round(tr.dur * 1000)},TOP=${tr.outTop ? 1 : 0},bar=document.querySelector('.bar');
 ${sx ? sx.js + '\n' : ''}function fit(){D.style.setProperty('--scale',Math.min(innerWidth/1280,innerHeight/720))}addEventListener('resize',fit);fit();
-function play(sl){sl.classList.remove('play');void sl.offsetWidth;sl.classList.add('play')}
+var CLICK=${sq.click ? 1 : 0};function SEQ(i,n){return ${sq.fn}}
+function play(sl){sl.classList.remove('play');var A=[].slice.call(sl.querySelectorAll('.anim')),n=A.length;A.forEach(function(e,i){e.style.setProperty('--d',SEQ(i,n)+'s');e.classList.toggle('wait',!!CLICK&&i>0)});void sl.offsetWidth;sl.classList.add('play')}
+function reveal(){var w=S[cur].querySelector('.anim.wait');if(!w)return false;w.style.setProperty('--d','0s');w.classList.remove('wait');return true}
 function upd(){bar.style.width=((cur+1)/S.length*100)+'%';if(!window.__start)try{history.replaceState(null,'','#'+(cur+1))}catch(e){}parent!==window&&parent.postMessage({deck:1,cur:cur,n:S.length},'*')}
-function go(n){if(n<0||n>=S.length||n===cur||busy)return;var a=S[cur],b=S[n];busy=1;b.classList.add('active',TR+'-in');a.classList.add(TR+'-out');a.style.zIndex=TOP?3:1;b.style.zIndex=TOP?1:3;a.style.display='flex';play(b);${sx ? sx.fn + '();' : ''}cur=n;upd();setTimeout(function(){a.classList.remove('active','play',TR+'-out');a.style.display='';a.style.zIndex='';b.classList.remove(TR+'-in');b.style.zIndex='';busy=0},DUR+30)}
+function go(n){if(CLICK&&n===cur+1&&!busy&&reveal())return;if(n<0||n>=S.length||n===cur||busy)return;var a=S[cur],b=S[n];busy=1;b.classList.add('active',TR+'-in');a.classList.add(TR+'-out');a.style.zIndex=TOP?3:1;b.style.zIndex=TOP?1:3;a.style.display='flex';play(b);${sx ? sx.fn + '();' : ''}cur=n;upd();setTimeout(function(){a.classList.remove('active','play',TR+'-out');a.style.display='';a.style.zIndex='';b.classList.remove(TR+'-in');b.style.zIndex='';busy=0},DUR+30)}
 addEventListener('keydown',function(e){var k=e.key;if(/^(ArrowRight|ArrowDown|PageDown| |Enter)$/.test(k)){e.preventDefault();go(cur+1)}else if(/^(ArrowLeft|ArrowUp|PageUp|Backspace)$/.test(k)){e.preventDefault();go(cur-1)}else if(k==='Home')go(0);else if(k==='End')go(S.length-1);else if(k==='f'||k==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}});
 D.addEventListener('click',function(e){if(e.target.closest('button,input,a,label,details,summary,select,textarea,canvas,[class^="ix-"],[class*=" ix-"]'))return;var r=D.getBoundingClientRect();go(e.clientX<r.left+r.width*.25?cur-1:cur+1)});
 var tx=0;addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{passive:true});addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)go(d<0?cur+1:cur-1)});
@@ -465,6 +523,11 @@ ${ixJs}
           <label>背景覆寫<select id="sBg">${grouped('backgrounds', s.bg, '使用模板背景')}</select></label>
           <label>轉場<select id="sTr">${opt('transitions', s.tr)}</select></label>
           <label>元素動畫<select id="sAn">${grouped('animations', s.an, '不使用')}</select></label>
+          <label>標題文字效果<select id="sTe">${opt('titleEffects', s.te, '模板預設')}</select></label>
+          <label>項目符號<select id="sBl">${opt('bullets', s.bl, '模板預設')}</select></label>
+          <label>圖片樣式<select id="sIm">${opt('imageStyles', s.im, '模板預設')}</select></label>
+          <label>動畫節奏<select id="sEz">${opt('easings', s.ez, '動畫預設')}</select></label>
+          <label>出現順序<select id="sSq">${opt('sequences', s.sq, '逐一出現（預設）')}</select></label>
           <label>換頁音效<select id="sSx">${grouped('sounds', s.sx, '不使用')}</select></label>
           <label class="chk" style="align-self:end"><input type="checkbox" id="sPn" ${s.pn ? 'checked' : ''}>顯示頁碼</label>
         </div>
@@ -485,7 +548,7 @@ ${ixJs}
         <p class="muted" style="font-size:13px;line-height:1.7">提示：預覽中可以直接點互動元件試玩。下載的 HTML 雙擊就能用瀏覽器播放（方向鍵換頁、F 全螢幕、Ctrl+P 可列印成 PDF）。</p>
       </div>
     </div>`;
-    const fields = { title: '#sTitle', tp: '#sTp', hf: '#sHf', bf: '#sBf', pl: '#sPl', bg: '#sBg', tr: '#sTr', an: '#sAn', sx: '#sSx' };
+    const fields = { title: '#sTitle', tp: '#sTp', hf: '#sHf', bf: '#sBf', pl: '#sPl', bg: '#sBg', tr: '#sTr', an: '#sAn', sx: '#sSx', te: '#sTe', bl: '#sBl', im: '#sIm', ez: '#sEz', sq: '#sSq' };
     let cur = 0, t;
     const read = () => { const o = {}; for (const k in fields) o[k] = $(fields[k]).value; o.pn = $('#sPn').checked; o.src = $('#deckSrc').value; return o; };
     const refresh = (keep) => {
@@ -518,62 +581,95 @@ ${ixJs}
   }
 
 
-  /* ---------- 一覽挑選（字型／轉場／動畫並排比較） ---------- */
-  const PICK_TABS = { fonts: '字型', transitions: '轉場', animations: '元素動畫' };
-  const pickState = () => Object.assign({ text: '健康生活小學堂', size: 40, speed: 1, ft: '', tr: '', an: '' }, store.get('sal-pick', {}));
+  /* ---------- 一覽挑選（每一類都能並排比較、點選） ---------- */
+  const PICK_STYLE = ['templates', 'palettes', 'backgrounds', 'fonts', 'titleEffects', 'bullets', 'imageStyles', 'transitions', 'animations', 'easings', 'sequences', 'sounds'];
+  const PICK_COMP = ['layouts', 'textboxes', 'shapes', 'icons', 'charts', 'infographics', 'interactive'];
+  const PICK_NAME = k => k === 'fonts' ? '標題字型' : k === 'sounds' ? '換頁音效' : CAT[k].n;
+  const MOTION = new Set(['transitions', 'animations', 'easings', 'sequences']);
+  const SLIDEY = new Set(['templates', 'palettes', 'backgrounds', 'titleEffects', 'bullets', 'imageStyles', 'sequences']);
+  function pickState() {
+    const p = Object.assign({ text: '健康生活小學堂', size: 40, speed: 1, sel: {}, multi: [] }, store.get('sal-pick', {}));
+    if (p.ft || p.tr || p.an) { p.sel = Object.assign({ hf: p.ft || '', tr: p.tr || '', an: p.an || '' }, p.sel); delete p.ft; delete p.tr; delete p.an; }
+    p.multi = (p.multi || []).filter(id => BY_ID[id]);
+    return p;
+  }
+  const savePick = p => store.set('sal-pick', p);
   let pickTimer = 0;
   function stopPick() { clearInterval(pickTimer); pickTimer = 0; }
+
   function renderPick(tab) {
-    if (!PICK_TABS[tab]) tab = 'fonts';
-    const ps = pickState();
-    const key = { fonts: 'ft', transitions: 'tr', animations: 'an' }[tab];
+    if (!CAT[tab] || !(PICK_STYLE.includes(tab) || PICK_COMP.includes(tab))) tab = 'templates';
+    const ps = pickState(), multi = PICK_COMP.includes(tab), key = STYLE_KEY[tab];
     const items = LIB.items[tab];
     const groups = [...new Set(items.map(i => i.group || (i.tags || [])[0]).filter(Boolean))];
-    const ctl = tab === 'fonts'
-      ? `<label class="pk-ctl">示範文字<input type="text" id="pkText" value="${esc(ps.text)}"></label><label class="pk-ctl">字級 <b id="pkSizeV">${ps.size}</b>px<input type="range" id="pkSize" min="20" max="80" value="${ps.size}"></label>`
-      : `<label class="pk-ctl">${tab === 'animations' ? '示範文字<input type="text" id="pkText" value="' + esc(ps.text) + '">' : ''}</label><label class="pk-ctl">速度<select id="pkSpeed">${[[1, '正常'], [2, '慢動作 ×2'], [4, '超慢 ×4']].map(([v, n]) => `<option value="${v}" ${+ps.speed === v ? 'selected' : ''}>${n}</option>`).join('')}</select></label><button class="btn" id="pkReplay">↻ 全部重播</button><button class="btn" id="pkPause">❚❚ 暫停</button>`;
-    $('#view').innerHTML = `<div class="page-head"><div><h1>一覽挑選</h1><p>同一個畫面看完所有${PICK_TABS[tab]}，${tab === 'fonts' ? '可以換成你自己的文字比較' : '全部同步播放，方便比較'}；點一下卡片就選定，最下方可以套用或複製。</p></div></div>
-      <div class="chips pk-tabs">${Object.entries(PICK_TABS).map(([k, n]) => `<a class="chip ${k === tab ? 'on' : ''}" href="#pick/${k}">${n}（${LIB.items[k].length}）</a>`).join('')}</div>
-      <div class="pk-bar">${ctl}${groups.length > 1 ? `<select id="pkGroup" class="pk-sel"><option value="">全部分組</option>${groups.map(g => `<option>${esc(g)}</option>`).join('')}</select>` : ''}</div>
+    const chip = k => `<a class="chip ${k === tab ? 'on' : ''}" href="#pick/${k}">${PICK_NAME(k)}<em>${LIB.items[k].length}</em>${(STYLE_KEY[k] && PICK_STYLE.includes(k) && ps.sel[STYLE_KEY[k]]) || (PICK_COMP.includes(k) && ps.multi.some(id => BY_ID[id].cat === k)) ? '<i class="dot"></i>' : ''}</a>`;
+    const usesText = tab === 'fonts' || tab === 'animations' || SLIDEY.has(tab);
+    const ctl = [
+      usesText ? `<label class="pk-ctl">示範文字<input type="text" id="pkText" value="${esc(ps.text)}"></label>` : '',
+      tab === 'fonts' ? `<label class="pk-ctl">字級 <b id="pkSizeV">${ps.size}</b>px<input type="range" id="pkSize" min="20" max="80" value="${ps.size}"></label>` : '',
+      MOTION.has(tab) ? `<label class="pk-ctl">速度<select id="pkSpeed">${[[1, '正常'], [2, '慢動作 ×2'], [4, '超慢 ×4']].map(([v, n]) => `<option value="${v}" ${+ps.speed === v ? 'selected' : ''}>${n}</option>`).join('')}</select></label><button class="btn sm" id="pkReplay">↻ 全部重播</button><button class="btn sm" id="pkPause">❚❚ 暫停</button>` : '',
+      groups.length > 1 ? `<select id="pkGroup" class="pk-sel"><option value="">全部分組</option>${groups.map(g => `<option>${esc(g)}</option>`).join('')}</select>` : '',
+    ].join('');
+    const hint = multi ? '元件可以複選，選好的會一起加到簡報裡。' : SLIDEY.has(tab) ? '示範投影片會套用你在其他分頁已選的模板、配色、字型等，所見即所得。' : '每一類選一個，點同一張可以取消。';
+    $('#view').innerHTML = `<div class="page-head"><div><h1>一覽挑選</h1><p>同一個畫面看完同類的所有選項，點一下就選定。${hint}</p></div></div>
+      <div class="pk-tabrow"><span>風格（每類選一個）</span><div class="chips pk-tabs">${PICK_STYLE.map(chip).join('')}</div></div>
+      <div class="pk-tabrow"><span>元件（可複選）</span><div class="chips pk-tabs">${PICK_COMP.map(chip).join('')}</div></div>
+      <div class="pk-bar">${ctl || `<span class="muted" style="font-size:13px">${esc(CAT[tab].d)}</span>`}</div>
       <div class="pk-grid pk-${tab}" id="pkGrid">${items.map((it, n) => pickTile(tab, it, n, ps)).join('')}</div>
       <div class="pk-dock" id="pkDock"></div>`;
     const grid = $('#pkGrid');
+    grid.style.setProperty('--pk-size', ps.size + 'px');
+    grid.style.setProperty('--pk-speed', ps.speed || 1);
+    mountPickTiles(tab, grid, ps);
+
     const refreshDock = () => {
-      const st = pickState(), f = BY_ID[st.ft], t = BY_ID[st.tr], a = BY_ID[st.an];
-      $$('.pk-tile', grid).forEach(el => el.classList.toggle('sel', el.dataset.id === st[key]));
-      $('#pkDock').innerHTML = `<div class="pk-picked"><span>字型：<b>${f ? esc(f.name) : '未選'}</b></span><span>轉場：<b>${t ? esc(t.name) : '未選'}</b></span><span>動畫：<b>${a ? esc(a.name) : '未選'}</b></span></div><div class="pk-acts"><button class="btn sm" id="pkClear">清除選擇</button><button class="btn sm" id="pkBasket">加入素材籃</button><button class="btn sm" id="pkCopy">複製給 Claude</button><button class="btn sm primary" id="pkStudio">套用到簡報工作室</button></div>`;
-      const chosen = [f, t, a].filter(Boolean);
-      $('#pkClear').onclick = () => { store.set('sal-pick', Object.assign(pickState(), { ft: '', tr: '', an: '' })); refreshDock(); };
-      $('#pkBasket').onclick = () => { if (!chosen.length) return toast('還沒有選任何項目'); chosen.forEach(it => { if (!basket.includes(it.id)) basket.push(it.id); }); saveBasket(); toast(`已加入 ${chosen.length} 項到素材籃`); };
-      $('#pkCopy').onclick = () => chosen.length ? copy(`我選好的簡報風格：\n${chosen.map(it => `- ${CAT[it.cat].n}：${it.name}（${it.id}）`).join('\n')}\n\n` + chosen.map(promptFor).join('\n---\n\n')) : toast('還沒有選任何項目');
+      const st = pickState();
+      $$('.pk-tile', grid).forEach(el => el.classList.toggle('sel', multi ? st.multi.includes(el.dataset.id) : st.sel[key] === el.dataset.id));
+      const styleChips = PICK_STYLE.filter(k => st.sel[STYLE_KEY[k]] && BY_ID[st.sel[STYLE_KEY[k]]]).map(k => `<span class="pk-pill" data-k="${STYLE_KEY[k]}">${PICK_NAME(k)}：<b>${esc(BY_ID[st.sel[STYLE_KEY[k]]].name)}</b><button aria-label="移除">✕</button></span>`).join('');
+      const comps = st.multi.length ? `<span class="pk-pill" data-k="__multi">元件 <b>${st.multi.length}</b> 個<button aria-label="清除元件">✕</button></span>` : '';
+      $('#pkDock').innerHTML = `<div class="pk-picked">${styleChips + comps || '<span class="muted">還沒有選任何項目，點上方卡片開始挑選</span>'}</div><div class="pk-acts"><button class="btn sm" id="pkClear">全部清除</button><button class="btn sm" id="pkBasket">加入素材籃</button><button class="btn sm" id="pkCopy">複製給 Claude</button><button class="btn sm primary" id="pkStudio">套用到簡報工作室</button></div>`;
+      const chosen = () => { const s2 = pickState(); return [...PICK_STYLE.map(k => BY_ID[s2.sel[STYLE_KEY[k]]]).filter(Boolean), ...s2.multi.map(id => BY_ID[id])]; };
+      $$('.pk-pill button', $('#pkDock')).forEach(b => b.onclick = () => { const s2 = pickState(), k = b.parentNode.dataset.k; if (k === '__multi') s2.multi = []; else delete s2.sel[k]; savePick(s2); refreshDock(); });
+      $('#pkClear').onclick = () => { const s2 = pickState(); s2.sel = {}; s2.multi = []; savePick(s2); refreshDock(); };
+      $('#pkBasket').onclick = () => { const c = chosen(); if (!c.length) return toast('還沒有選任何項目'); c.forEach(it => { if (!basket.includes(it.id)) basket.push(it.id); }); saveBasket(); toast(`已加入 ${c.length} 項到素材籃`); };
+      $('#pkCopy').onclick = () => { const c = chosen(); if (!c.length) return toast('還沒有選任何項目'); copy(`我選好的簡報風格與元件：\n${c.map(it => `- ${CAT[it.cat].n}：${it.name}（${it.id}）`).join('\n')}\n\n` + c.map(promptFor).join('\n---\n\n')); };
       $('#pkStudio').onclick = () => {
-        if (!chosen.length) return toast('還沒有選任何項目');
-        const s = studioState(); if (f) s.hf = f.id; if (t) s.tr = t.id; if (a) s.an = a.id;
-        store.set('sal-studio', s); location.hash = '#studio'; toast('已套用到簡報工作室');
+        const s2 = pickState(), c = chosen(); if (!c.length) return toast('還沒有選任何項目');
+        const sd = studioState(); Object.entries(s2.sel).forEach(([k, v]) => { if (v && BY_ID[v]) sd[k] = v; });
+        if (s2.multi.length) sd.src = sd.src.trim() + '\n---\n# 挑選的元件\n' + s2.multi.map(id => `[[${id}]]`).join('\n');
+        store.set('sal-studio', sd); location.hash = '#studio'; toast('已套用到簡報工作室');
       };
     };
     grid.addEventListener('click', e => {
       const tile = e.target.closest('.pk-tile'); if (!tile) return;
       if (e.target.closest('.pk-more')) return openModal(BY_ID[tile.dataset.id]);
-      const st = pickState(); st[key] = st[key] === tile.dataset.id ? '' : tile.dataset.id; store.set('sal-pick', st); refreshDock();
+      if (e.target.closest('.pk-play')) return playSound(BY_ID[tile.dataset.id]);
+      if (tab === 'interactive' && e.target.closest('iframe')) return;
+      const st = pickState(), id = tile.dataset.id;
+      if (multi) { const i = st.multi.indexOf(id); i >= 0 ? st.multi.splice(i, 1) : st.multi.push(id); }
+      else st.sel[key] = st.sel[key] === id ? '' : id;
+      savePick(st); refreshDock();
+      $$('.pk-tabs .chip.on').forEach(c => c.querySelector('.dot') || c.insertAdjacentHTML('beforeend', '<i class="dot"></i>'));
     });
     refreshDock();
+
     const gsel = $('#pkGroup');
     if (gsel) gsel.onchange = () => $$('.pk-tile', grid).forEach(el => { el.style.display = !gsel.value || el.dataset.g === gsel.value ? '' : 'none'; });
     const txt = $('#pkText');
-    if (txt) txt.oninput = () => { store.set('sal-pick', Object.assign(pickState(), { text: txt.value })); $$('.pk-sample', grid).forEach(el => el.textContent = txt.value || '示範文字'); };
-    if (tab === 'fonts') {
-      const sz = $('#pkSize');
-      sz.oninput = () => { grid.style.setProperty('--pk-size', sz.value + 'px'); $('#pkSizeV').textContent = sz.value; store.set('sal-pick', Object.assign(pickState(), { size: +sz.value })); };
-      grid.style.setProperty('--pk-size', ps.size + 'px');
-      return;
-    }
-    let speed = +ps.speed || 1, paused = false;
-    $('#pkSpeed').onchange = e => { speed = +e.target.value; store.set('sal-pick', Object.assign(pickState(), { speed })); restart(); };
-    $('#pkReplay').onclick = () => { paused = false; $('#pkPause').textContent = '❚❚ 暫停'; restart(); };
-    $('#pkPause').onclick = () => { paused = !paused; $('#pkPause').textContent = paused ? '▶ 繼續' : '❚❚ 暫停'; if (paused) stopPick(); else restart(); };
-    function restart() { stopPick(); tick(); pickTimer = setInterval(tick, (tab === 'transitions' ? 2200 : 2600) * speed); }
-    let showB = false;
+    if (txt) txt.oninput = () => {
+      const st = pickState(); st.text = txt.value; savePick(st);
+      $$('.pk-sample', grid).forEach(el => el.textContent = txt.value || '示範文字');
+      $$('.slide>h1,.slide>h2', grid).forEach(el => el.textContent = txt.value || '示範文字');
+    };
+    const sz = $('#pkSize');
+    if (sz) sz.oninput = () => { grid.style.setProperty('--pk-size', sz.value + 'px'); $('#pkSizeV').textContent = sz.value; const st = pickState(); st.size = +sz.value; savePick(st); };
+    if (!MOTION.has(tab)) return;
+    let speed = +ps.speed || 1, paused = false, showB = false;
+    const restart = () => { stopPick(); tick(); pickTimer = setInterval(tick, (tab === 'sequences' ? 4200 : tab === 'transitions' ? 2200 : 2600) * speed); };
+    $('#pkSpeed').onchange = e => { speed = +e.target.value; grid.style.setProperty('--pk-speed', speed); const st = pickState(); st.speed = speed; savePick(st); restart(); };
+    $('#pkReplay').onclick = () => { paused = false; $('#pkPause').textContent = '❚❚ 暫停'; grid.classList.remove('paused'); restart(); };
+    $('#pkPause').onclick = () => { paused = !paused; $('#pkPause').textContent = paused ? '▶ 繼續' : '❚❚ 暫停'; grid.classList.toggle('paused', paused); paused ? stopPick() : restart(); };
+    const selAn = BY_ID[ps.sel.an], selEz = BY_ID[ps.sel.ez];
     function tick() {
       if (tab === 'transitions') {
         $$('.pk-tile', grid).forEach(el => {
@@ -587,23 +683,48 @@ ${ixJs}
           clearTimeout(a._t); a._t = setTimeout(() => { a.className = a.className.split(' ')[0]; a.style.zIndex = 0; }, d * 1000 + 30);
         });
         showB = !showB;
-      } else {
+      } else if (tab === 'animations') {
         $$('.pk-tile', grid).forEach(el => {
           const it = BY_ID[el.dataset.id], node = el.querySelector('.pk-anim');
-          if (it.loop && node.classList.contains(it.id)) { node.style.animationDuration = it.dur * speed + 's'; return; }
-          node.classList.remove(it.id); void node.offsetWidth; node.classList.add(it.id);
+          if (!(it.loop && node.classList.contains(it.id))) { node.classList.remove(it.id); void node.offsetWidth; node.classList.add(it.id); }
           node.style.animationDuration = it.dur * speed + 's';
+          if (selEz) node.style.animationTimingFunction = selEz.value;
         });
+      } else if (tab === 'sequences') {
+        $$('.pk-tile', grid).forEach(el => seqPlay(BY_ID[el.dataset.id], el, speed, selAn && !selAn.loop ? selAn : null, selEz));
+      } else if (tab === 'easings') {
+        $$('.ez-track i', grid).forEach(i => { i.style.animation = 'none'; void i.offsetWidth; i.style.animation = ''; });
       }
     }
     setTimeout(restart, 50);
   }
+
   function pickTile(tab, it, n, ps) {
     const g = esc(it.group || (it.tags || [])[0] || '');
-    const head = `<div class="pk-cap"><span class="pk-no">${String(n + 1).padStart(2, '0')}</span><b>${esc(it.name)}</b><button class="pk-more" title="看程式碼">⋯</button></div>`;
-    if (tab === 'fonts') return `<div class="pk-tile" data-id="${it.id}" data-g="${g}"><div class="pk-font ${it.id}"><div class="pk-sample">${esc(ps.text || '示範文字')}</div><div class="pk-en">Aa Bb 0123 簡報</div></div>${head}<small class="pk-desc">${esc(it.group)}・${esc(it.desc)}</small></div>`;
-    if (tab === 'transitions') return `<div class="pk-tile" data-id="${it.id}" data-g="${g}"><div class="pk-stage tr-stage"><div class="a"><span>第 1 頁</span><i></i><i></i></div><div class="b"><span>第 2 頁</span><i></i><i></i></div></div>${head}<small class="pk-desc">${esc(it.desc)}・${it.dur} 秒</small></div>`;
-    return `<div class="pk-tile" data-id="${it.id}" data-g="${g}"><div class="pk-astage"><div class="pk-anim ${it.loop ? it.id : ''}"><span class="pk-sample">${esc(ps.text || '示範文字')}</span></div></div>${head}<small class="pk-desc">${esc(it.desc)}</small></div>`;
+    const cap = `<div class="pk-cap"><span class="pk-no">${String(n + 1).padStart(2, '0')}</span><b>${esc(it.name)}</b>${tab === 'sounds' ? '<button class="pk-play" title="播放">▶</button>' : ''}<button class="pk-more" title="看程式碼">⋯</button></div><small class="pk-desc">${esc(it.desc || '')}</small>`;
+    let body;
+    if (tab === 'fonts') body = `<div class="pk-font ${it.id}"><div class="pk-sample">${esc(ps.text || '示範文字')}</div><div class="pk-en">Aa Bb 0123 簡報</div></div>`;
+    else if (tab === 'transitions') body = `<div class="pk-stage tr-stage"><div class="a"><span>第 1 頁</span><i></i><i></i></div><div class="b"><span>第 2 頁</span><i></i><i></i></div></div>`;
+    else if (tab === 'animations') body = `<div class="pk-astage"><div class="pk-anim ${it.loop ? it.id : ''}"><span class="pk-sample">${esc(ps.text || '示範文字')}</span></div></div>`;
+    else if (tab === 'sounds') body = `<div class="pk-snd"><button class="pk-play" aria-label="播放 ${esc(it.name)}">▶</button></div>`;
+    else body = `<div class="pk-pv"></div>`;
+    return `<div class="pk-tile" data-id="${it.id}" data-g="${g}">${body}${cap}</div>`;
+  }
+  function mountPickTiles(tab, grid, ps) {
+    $$('.pk-pv', grid).forEach(pv => {
+      const tile = pv.closest('.pk-tile'), it = BY_ID[tile.dataset.id];
+      if (SLIDEY.has(tab)) {
+        const o = Object.assign({}, ps.sel, { [STYLE_KEY[tab]]: it.id });
+        if (tab === 'sequences') delete o.sq;
+        pv.className = 'pv slidepv';
+        pv.dataset.fit = 'slide';
+        pv.innerHTML = `<div class="slidebox z">${composeSlide(o, { img: tab === 'imageStyles', seq: tab === 'sequences', text: ps.text, focus: tab === 'titleEffects' ? 'title' : tab === 'bullets' ? 'list' : '' })}</div>`;
+        requestAnimationFrame(() => fit(pv));
+      } else {
+        render(it, pv);
+      }
+      ro.observe(pv);
+    });
   }
 
   /* ---------- 啟動 ---------- */
