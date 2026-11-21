@@ -240,7 +240,7 @@
   function basketPrompt() {
     const items = basket.map(id => BY_ID[id]);
     const head = `請幫我製作一份網頁簡報（單一 HTML 檔，每張投影片 1280×720，會依視窗等比縮放，可用方向鍵、點擊或滑動換頁）。\n請使用以下 ${items.length} 個素材：\n` + items.map(it => `- ${CAT[it.cat].n}：${it.name}（${it.id}）`).join('\n') + '\n\n以下是每個素材的程式碼：\n\n';
-    return head + items.map(promptFor).join('\n---\n\n');
+    return head + items.map(promptFor).join('\n---\n\n') + '\n\n如果有不清楚或缺少的資訊（例如用途、對象、要放的文字），請先問我，確認後再開始做。';
   }
   $('#basketList').addEventListener('click', e => {
     const c = e.target.closest('[data-copy]'), r = e.target.closest('[data-rm]');
@@ -574,7 +574,7 @@ ${ixJs}
     $('#pCopy').onclick = () => {
       const st = read(); const names = k => (BY_ID[st[k]] || {}).name || '（模板預設）';
       const used = [...parseSlides(st.src).used];
-      const txt = `請幫我把下面這份網頁簡報做得更完整、更好看（保留單一 HTML 檔、1280×720 投影片、方向鍵換頁）。\n目前設定：模板「${names('tp')}」、標題字型 ${names('hf')}、內文字型 ${names('bf')}、轉場「${names('tr')}」、元素動畫「${st.an ? names('an') : '無'}」${st.sx ? '、換頁音效「' + names('sx') + '」' : ''}。\n使用的元件：${used.length ? used.join('、') : '無'}\n\n以下是完整的 HTML：\n\n\`\`\`html\n${buildDeck(st)}\n\`\`\``;
+      const txt = `請幫我把下面這份網頁簡報做得更完整、更好看（保留單一 HTML 檔、1280×720 投影片、方向鍵換頁）。\n目前設定：模板「${names('tp')}」、標題字型 ${names('hf')}、內文字型 ${names('bf')}、轉場「${names('tr')}」、元素動畫「${st.an ? names('an') : '無'}」${st.sx ? '、換頁音效「' + names('sx') + '」' : ''}。\n使用的元件：${used.length ? used.join('、') : '無'}\n\n以下是完整的 HTML：\n\n\`\`\`html\n${buildDeck(st)}\n\`\`\`\n\n如果有不清楚或缺少的資訊（例如用途、對象、要放的文字），請先問我，確認後再開始做。`;
       copy(txt, '已複製整份簡報，可以貼給 Claude 了');
     };
     refresh(false);

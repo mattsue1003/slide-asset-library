@@ -47,7 +47,7 @@
     if (t === 'shot') return `<div class="g-shot"><svg viewBox="${p.vb}" preserveAspectRatio="xMidYMid slice"><rect x="-3000" y="232" width="6000" height="3000" fill="#d9cdbd"/>${PERSON}</svg></div>`;
     if (t === 'diagram') return `<div class="g-diag"><svg viewBox="0 0 160 100">${p.svg}</svg></div>`;
     if (t === 'angle') return `<div class="g-diag"><svg viewBox="0 0 160 100"><line x1="0" y1="86" x2="160" y2="86" stroke="#d6cbbb" stroke-width="2"/><g transform="translate(92 34) scale(.22)">${PERSON}</g><line x1="${p.x}" y1="${p.y}" x2="103" y2="41" stroke="#c2410c" stroke-width="1.2" stroke-dasharray="3 3"/>${CAM(p.x, p.y, p.r)}</svg></div>`;
-    if (t === 'ratio') { const [w, h] = it.ratio; const s = Math.min(130 / w, 90 / h); return `<div class="g-ratio"><i style="width:${w * s}px;height:${h * s}px"><b>${w}:${h}</b></i></div>`; }
+    if (t === 'ratio') { const [w, h] = it.ratio; const s = Math.min(130 / w, 90 / h); return `<div class="g-ratio"><i style="width:${w * s}px;height:${h * s}px"><b>${esc(it.label || w + ':' + h)}</b></i></div>`; }
     if (t === 'motion') return `<div class="g-scene g-motion"><div class="mv mv-${it.id}">${SCENE}</div><i class="g-frame"></i></div>`;
     if (t === 'speed') return `<div class="g-speed"><i class="sp-${it.id}"></i><span></span></div>`;
     if (t === 'trans') return `<div class="g-trans"><div class="a">A</div><div class="b tr-${it.id}">B</div></div>`;

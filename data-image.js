@@ -124,8 +124,10 @@
     I('md-elegant', '優雅', 'elegant, refined, luxurious', '高級、品牌', T('#1e1b18', '#d9b26f')),
   ];
 
-  const R = (id, w, h, desc, en) => Object.assign(I(id, `${w}:${h}`, en, desc, { t: 'ratio' }), { ratio: [w, h] });
+  const R = (id, w, h, desc, en, label) => Object.assign(I(id, label || `${w}:${h}`, en, desc, { t: 'ratio' }), { ratio: [w, h], label });
   items.ratios = [
+    R('ar-a4', 210, 297, '衛教單張、講義、列印用', 'A4 portrait page (210 × 297 mm, aspect ratio about 1:1.414)', 'A4 直式'),
+    R('ar-a4-land', 297, 210, '橫式講義、流程圖、證書', 'A4 landscape page (297 × 210 mm, aspect ratio about 1.414:1)', 'A4 橫式'),
     R('ar-1-1', 1, 1, 'IG／FB 方形貼文', 'square 1:1 aspect ratio'),
     R('ar-4-5', 4, 5, 'IG 直式貼文', '4:5 portrait aspect ratio'),
     R('ar-3-4', 3, 4, '直式海報、IG', '3:4 portrait aspect ratio'),
@@ -164,7 +166,8 @@
 
   items.presets = [
     Object.assign(I('ps-health-ed', '衛教插圖', 'health education illustration preset', '親切易懂的衛教畫面', { t: 'preset', c: ['#3fa58b', '#1f6f8b'] }), { picks: ['st-flat', 'sh-ms', 'an-eye', 'cp-negative', 'lt-soft', 'cl-muted', 'md-warm', 'ar-16-9', 'q-clean-bg', 'q-no-text', 'ng-text', 'ng-fingers', 'ng-creepy'], subject: '一位護理師親切地教阿伯量血壓' }),
-    Object.assign(I('ps-handout', '衛教單張', 'health education handout preset', '直式 A4，標題＋三個重點＋插圖', { t: 'preset', c: ['#2f8f6b', '#1f5f4a'] }), { picks: ['st-flat', 'cp-center', 'lt-soft', 'cl-pastel', 'md-warm', 'ar-3-4', 'q-handout', 'q-zh-text', 'q-clean-bg', 'ng-watermark'], subject: '糖尿病健康飲食衛教單張，標題「糖尿病 健康飲食」，三個重點：「定時定量吃飯」「多吃蔬菜」「少喝含糖飲料」，搭配長者享用健康餐的小插圖' }),
+    Object.assign(I('ps-handout', '衛教單張', 'health education handout preset', 'A4 直式，標題＋三個重點＋插圖', { t: 'preset', c: ['#2f8f6b', '#1f5f4a'] }), { picks: ['st-flat', 'cp-center', 'lt-soft', 'cl-pastel', 'md-warm', 'ar-a4', 'q-handout', 'q-zh-text', 'q-clean-bg', 'ng-watermark'], subject: '糖尿病健康飲食衛教單張，標題「糖尿病 健康飲食」，三個重點：「定時定量吃飯」「多吃蔬菜」「少喝含糖飲料」，搭配長者享用健康餐的小插圖' }),
+    Object.assign(I('ps-handout-land', '衛教單張（橫式）', 'landscape health education handout preset', 'A4 橫式，標題＋三欄重點，適合張貼、投影', { t: 'preset', c: ['#2f6f8f', '#1f4a5f'] }), { picks: ['st-flat', 'cp-center', 'lt-soft', 'cl-pastel', 'md-warm', 'ar-a4-land', 'q-handout', 'q-zh-text', 'q-clean-bg', 'ng-watermark'], subject: '糖尿病健康飲食衛教單張（橫式三欄），標題「糖尿病 健康飲食」，三欄重點：「定時定量吃飯」「多吃蔬菜」「少喝含糖飲料」，每欄一張小插圖' }),
     Object.assign(I('ps-elder-portrait', '長者溫馨人像', 'warm elder portrait preset', '自然真實、有溫度的人像', { t: 'preset', c: ['#c98b4e', '#8a5a32'] }), { picks: ['st-film', 'sh-mcu', 'an-eye', 'cp-thirds', 'lt-window', 'cl-warm', 'ln-85', 'ln-bokeh', 'md-warm', 'ar-4-5', 'q-natural-skin', 'q-elder', 'q-asian', 'ng-face', 'ng-plastic'], subject: '一位滿頭白髮的阿嬤在窗邊微笑，手上拿著老照片' }),
     Object.assign(I('ps-slide-bg', '簡報背景圖', 'presentation background preset', '留白給文字的乾淨背景', { t: 'preset', c: ['#4a6a85', '#1f2d3a'] }), { picks: ['st-photo', 'sh-wide', 'cp-negative', 'lt-soft', 'cl-muted', 'ln-bokeh', 'md-calm', 'ar-16-9', 'q-text-space', 'q-no-text', 'ng-text', 'ng-cluttered'], subject: '清晨的社區公園，遠處有幾位長者在散步' }),
     Object.assign(I('ps-social', '社群貼文主視覺', 'social media key visual preset', '吸睛、適合 IG／FB', { t: 'preset', c: ['#e8622c', '#c2410c'] }), { picks: ['st-3d-cute', 'sh-ms', 'cp-center', 'lt-studio', 'cl-vivid', 'md-joy', 'ar-1-1', 'q-clean-bg', 'q-text-space', 'ng-text', 'ng-watermark'], subject: '一顆開心的藥丸角色舉著「按時吃藥」的小旗子' }),
@@ -211,7 +214,7 @@
       const neg = get('negative').map(i => i.en).join(', ');
       return {
         zh: `${subject || '（請先輸入畫面主體）'}\n${zhParts.join('\n')}${neg ? '\n避免：' + get('negative').map(i => i.name).join('、') : ''}`,
-        en: en + (ar ? `\n\nAspect ratio: ${ar.ratio[0]}:${ar.ratio[1]}` : ''),
+        en: en + (ar ? `\n\nAspect ratio: ${ar.label ? ar.en : ar.ratio[0] + ':' + ar.ratio[1]}` : ''),
         neg,
       };
     },
@@ -219,14 +222,14 @@
       const ar = get('ratios')[0], neg = get('negative');
       const lines = o.zh.split('\n').slice(1).filter(l => !l.startsWith('比例：') && !l.startsWith('避免：'));
       const out = [
-        '請直接幫我生成一張圖片，不用先問我問題。',
+        '請幫我生成一張圖片。如果有不清楚或缺少的資訊（例如用途、對象、要放的文字），請先問我，確認後再生成。',
         '',
         `畫面主體：${subject || '（請在這裡寫你想畫的內容）'}`,
         ...lines,
       ];
-      if (ar) out.push(`圖片比例：${ar.ratio[0]}:${ar.ratio[1]}（${ar.ratio[0] > ar.ratio[1] ? '橫式' : ar.ratio[0] < ar.ratio[1] ? '直式' : '正方形'}）`);
+      if (ar) out.push(ar.label ? `圖片尺寸：${ar.label}（${ar.ratio[0]} × ${ar.ratio[1]} mm，長寬比約 ${ar.ratio[0] < ar.ratio[1] ? '1:1.41' : '1.41:1'}），整張畫面就是一整頁 A4 ${ar.ratio[0] < ar.ratio[1] ? '直式' : '橫式'}版面` : `圖片比例：${ar.ratio[0]}:${ar.ratio[1]}（${ar.ratio[0] > ar.ratio[1] ? '橫式' : ar.ratio[0] < ar.ratio[1] ? '直式' : '正方形'}）`);
       if (neg.length) out.push(`請避免：${neg.map(i => i.name).join('、')}`);
-      out.push('', '英文提示詞（一起參考）：', o.en.replace(/\n\nAspect ratio: .*/, '') + (ar ? `, ${ar.ratio[0]}:${ar.ratio[1]} aspect ratio` : '') + (o.neg ? `. Avoid: ${o.neg}` : ''));
+      out.push('', '英文提示詞（一起參考）：', o.en.replace(/\n\nAspect ratio: .*/, '') + (ar ? `, ${ar.label ? ar.en : ar.ratio[0] + ':' + ar.ratio[1] + ' aspect ratio'}` : '') + (o.neg ? `. Avoid: ${o.neg}` : ''));
       return out.join('\n');
     },
   };
