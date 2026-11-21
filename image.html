@@ -7,7 +7,7 @@
 <meta name="description" content="AI 圖片生成提示詞素材庫：畫風、景別、角度、構圖、光線、色調、鏡頭、氛圍、比例與負面提示，點選組合出中英文提示詞。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="app.css?v=8">
-<link rel="stylesheet" href="gen.css?v=4">
+<link rel="stylesheet" href="gen.css?v=5">
 </head>
 <body>
 <header class="top">
@@ -30,7 +30,9 @@
     <pre class="g-out" id="gEn"></pre>
     <div id="gNegWrap"><h4>負面提示 NEGATIVE</h4><pre class="g-out" id="gNeg"></pre></div>
     <div class="g-acts">
-      <button class="btn primary" id="gCopyClaude" type="button">複製給 Claude 幫我生成</button>
+      <button class="btn primary" id="gToGPT" type="button">複製並打開 ChatGPT</button>
+      <button class="btn primary" id="gToGemini" type="button">複製並打開 Gemini</button>
+      <p class="g-hint">會複製整段提示詞並開新分頁，在輸入框貼上（⌘V／Ctrl+V）送出就會生成。</p>
       <button class="btn" id="gCopyEn" type="button">複製英文提示詞</button>
       <button class="btn" id="gCopyZh" type="button">複製中文設定</button>
       <button class="btn" id="gCopyNeg" type="button">複製負面提示</button>
@@ -39,8 +41,8 @@
   </aside>
 </div>
 <div class="toast" id="toast"></div>
-<script src="data-image.js?v=3"></script>
-<script src="gen.js?v=5"></script>
+<script src="data-image.js?v=4"></script>
+<script src="gen.js?v=6"></script>
 <script src="https://mattsue1003.github.io/oth-report-button/report.js" data-site="圖片生成素材庫" defer></script>
 <script>
 window.addEventListener('load',function(){

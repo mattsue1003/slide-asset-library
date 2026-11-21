@@ -215,8 +215,19 @@
         neg,
       };
     },
-    claude(o, chosen, subject) {
-      return `請幫我生成一張圖片（可以用 Higgsfield 或你能用的圖片生成工具）。\n\n【畫面主體】${subject || '（未填）'}\n【我選的設定】\n${o.zh.split('\n').slice(1).join('\n')}\n\n【英文提示詞】\n${o.en}${o.neg ? `\n\n【負面提示】\n${o.neg}` : ''}\n\n如果主體描述是中文，請幫我翻成自然的英文再生成；生成後請給我看結果，我可能會再調整。`;
+    chat(o, subject, get) {
+      const ar = get('ratios')[0], neg = get('negative');
+      const lines = o.zh.split('\n').slice(1).filter(l => !l.startsWith('比例：') && !l.startsWith('避免：'));
+      const out = [
+        '請直接幫我生成一張圖片，不用先問我問題。',
+        '',
+        `畫面主體：${subject || '（請在這裡寫你想畫的內容）'}`,
+        ...lines,
+      ];
+      if (ar) out.push(`圖片比例：${ar.ratio[0]}:${ar.ratio[1]}（${ar.ratio[0] > ar.ratio[1] ? '橫式' : ar.ratio[0] < ar.ratio[1] ? '直式' : '正方形'}）`);
+      if (neg.length) out.push(`請避免：${neg.map(i => i.name).join('、')}`);
+      out.push('', '英文提示詞（一起參考）：', o.en.replace(/\n\nAspect ratio: .*/, '') + (ar ? `, ${ar.ratio[0]}:${ar.ratio[1]} aspect ratio` : '') + (o.neg ? `. Avoid: ${o.neg}` : ''));
+      return out.join('\n');
     },
   };
 })();

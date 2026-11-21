@@ -122,7 +122,11 @@
   $('#gCopyEn').onclick = () => copy(build().en, '已複製英文提示詞');
   $('#gCopyZh').onclick = () => copy(build().zh, '已複製中文提示詞');
   $('#gCopyNeg').onclick = () => copy(build().neg, '已複製負面提示詞');
-  $('#gCopyClaude').onclick = () => { const o = build(); copy(G.claude(o, chosen(), st.subject), '已複製，貼給 Claude 就能請它幫你生成'); };
+  const chatText = () => G.chat(build(), st.subject.trim(), k => (st.sel[k] || []).map(id => BY_ID[id]));
+  const openWith = (url, name) => { window.open(url, '_blank', 'noopener'); copy(chatText(), `已複製，到 ${name} 輸入框貼上送出`); };
+  $('#gToGPT').onclick = () => openWith('https://chatgpt.com/', 'ChatGPT');
+  $('#gToGemini').onclick = () => openWith('https://gemini.google.com/app', 'Gemini');
+  window.GEN_APP_CHAT = chatText;
   $('#gClear').onclick = () => { st.sel = {}; save(); renderAll(); };
   $('#gDockToggle').onclick = () => $('#gDock').classList.toggle('open');
   window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (CAT[h]) { st.tab = h; save(); renderSide(); renderGrid(); window.scrollTo(0, 0); } });

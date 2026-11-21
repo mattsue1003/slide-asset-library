@@ -211,8 +211,16 @@
         .map(([n, k]) => get(k).length ? `${n}：${get(k).map(i => i.name).join('、')}` : '').filter(Boolean);
       return { zh: `${subject || '（請先輸入畫面主體）'}\n${zhParts.join('\n')}`, en: lines.map(([k, v]) => `${k}: ${v}`).join('\n'), neg: '' };
     },
-    claude(o, chosen, subject) {
-      return `請幫我生成一段影片（可以用 Higgsfield 或你能用的影片生成工具）。\n\n【畫面主體】${subject || '（未填）'}\n【我選的設定】\n${o.zh.split('\n').slice(1).join('\n')}\n\n【英文提示詞】\n${o.en}\n\n如果主體描述是中文，請幫我翻成自然的英文再生成；需要的話先生成一張首幀圖片再轉成影片。生成後請給我看結果，我可能會再調整。`;
+    chat(o, subject) {
+      return [
+        '請直接幫我生成一段影片，不用先問我問題。',
+        '',
+        `畫面主體：${subject || '（請在這裡寫你想拍的內容）'}`,
+        ...o.zh.split('\n').slice(1),
+        '',
+        '英文提示詞（一起參考）：',
+        o.en,
+      ].join('\n');
     },
   };
 })();

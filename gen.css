@@ -97,7 +97,7 @@
 .g-chip button{border:0;background:none;color:var(--c-mute);cursor:pointer;font-size:11px;padding:2px 5px}
 .g-out{margin:0;padding:12px;border-radius:12px;background:var(--c-bg);border:1px solid var(--c-line);font:13px/1.65 ui-monospace,Menlo,monospace;white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto}
 .g-acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.g-acts .primary{grid-column:1/-1}
+.g-hint{grid-column:1/-1;margin:-2px 0 2px;font-size:12px;line-height:1.5;color:var(--c-mute)}
 
 @media (max-width:1180px){.g-layout{grid-template-columns:170px minmax(0,1fr) 330px}}
 @media (max-width:900px){
