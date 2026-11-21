@@ -11,23 +11,23 @@
   const CATS = [
     { k: 'templates', n: '簡報模板', ic: 'image', kind: 'slide', wide: 1, d: '整套配色＋字型＋裝飾的投影片主題' },
     { k: 'fonts', n: '字型', ic: 'book', kind: 'font', d: '繁中、日文、英文 Google Fonts，可直接連結使用' },
-    { k: 'palettes', n: '配色方案', ic: 'sun', kind: 'palette', isNew: 1, d: '五色一組：底色、輔色、主色、強調、文字' },
-    { k: 'backgrounds', n: '背景', ic: 'cloud', kind: 'bg', isNew: 1, d: '漸層、圖樣、紙質紋理、會動的背景' },
-    { k: 'titleEffects', n: '標題文字效果', ic: 'flag', kind: 'tstyle', wide: 1, isNew: 1, d: '陰影、空心、漸層、螢光筆、色塊、手繪底線…' },
-    { k: 'bullets', n: '項目符號', ic: 'check', kind: 'tstyle', wide: 1, isNew: 1, d: '圓點、勾勾、數字、箭頭、卡片式條列' },
-    { k: 'imageStyles', n: '圖片樣式', ic: 'camera', kind: 'tstyle', wide: 1, isNew: 1, d: '圓角、圓形、拱形、拍立得、黑白、復古、柔焦' },
-    { k: 'layouts', n: '版面配置', ic: 'sliders', kind: 'layout', wide: 1, isNew: 1, d: '封面、雙欄、圖文、數據、團隊、感謝頁等排版' },
+    { k: 'palettes', n: '配色方案', ic: 'sun', kind: 'palette', d: '五色一組：底色、輔色、主色、強調、文字' },
+    { k: 'backgrounds', n: '背景', ic: 'cloud', kind: 'bg', d: '漸層、圖樣、紙質紋理、會動的背景' },
+    { k: 'titleEffects', n: '標題文字效果', ic: 'flag', kind: 'tstyle', wide: 1, d: '陰影、空心、漸層、螢光筆、色塊、手繪底線…' },
+    { k: 'bullets', n: '項目符號', ic: 'check', kind: 'tstyle', wide: 1, d: '圓點、勾勾、數字、箭頭、卡片式條列' },
+    { k: 'imageStyles', n: '圖片樣式', ic: 'camera', kind: 'tstyle', wide: 1, d: '圓角、圓形、拱形、拍立得、黑白、復古、柔焦' },
+    { k: 'layouts', n: '版面配置', ic: 'sliders', kind: 'layout', wide: 1, d: '封面、雙欄、圖文、數據、團隊、感謝頁等排版' },
     { k: 'transitions', n: '轉場', ic: 'arrow-right', kind: 'transition', d: '換頁效果：推移、翻轉、擦拭、圓形展開…' },
     { k: 'animations', n: '畫面動畫', ic: 'play', kind: 'anim', d: '元素進場、強調、循環動畫' },
-    { k: 'easings', n: '動畫節奏', ic: 'trend', kind: 'easing', isNew: 1, d: '同一個動作用不同速度曲線：平穩、加速、彈性、回彈' },
-    { k: 'sequences', n: '出現順序', ic: 'clock', kind: 'seq', wide: 1, isNew: 1, d: '同一頁元素一起出現、逐一出現、點一下出現…' },
+    { k: 'easings', n: '動畫節奏', ic: 'trend', kind: 'easing', d: '同一個動作用不同速度曲線：平穩、加速、彈性、回彈' },
+    { k: 'sequences', n: '出現順序', ic: 'clock', kind: 'seq', wide: 1, d: '同一頁元素一起出現、逐一出現、點一下出現…' },
     { k: 'textboxes', n: '文字方塊', ic: 'chat', kind: 'block', w: 480, d: '便利貼、對話框、提示框、引言、標籤…' },
-    { k: 'shapes', n: '形狀裝飾', ic: 'star', kind: 'block', w: 440, isNew: 1, d: '分隔線、色塊、徽章、箭頭、框線、點綴' },
-    { k: 'icons', n: '圖示', ic: 'smile', kind: 'icon', isNew: 1, d: '線條 SVG 圖示，含醫療、生活、商務' },
-    { k: 'charts', n: '圖表元件', ic: 'bar-chart', kind: 'block', w: 520, isNew: 1, d: '純 CSS／SVG 圖表：甜甜圈、長條、雷達…' },
-    { k: 'infographics', n: '資訊圖塊', ic: 'pie', kind: 'block', w: 640, isNew: 1, d: '時間軸、流程、SWOT、心智圖、比較表…' },
-    { k: 'interactive', n: '互動元件', ic: 'target', kind: 'ix', w: 480, isNew: 1, d: '選擇題、是非題、翻牌、轉盤、計時器…' },
-    { k: 'sounds', n: '音效', ic: 'music', kind: 'sound', isNew: 1, d: '答對、答錯、掌聲、鼓聲…即時合成免音檔' },
+    { k: 'shapes', n: '形狀裝飾', ic: 'star', kind: 'block', w: 440, d: '分隔線、色塊、徽章、箭頭、框線、點綴' },
+    { k: 'icons', n: '圖示', ic: 'smile', kind: 'icon', d: '線條 SVG 圖示，含醫療、生活、商務' },
+    { k: 'charts', n: '圖表元件', ic: 'bar-chart', kind: 'block', w: 520, d: '純 CSS／SVG 圖表：甜甜圈、長條、雷達…' },
+    { k: 'infographics', n: '資訊圖塊', ic: 'pie', kind: 'block', w: 640, d: '時間軸、流程、SWOT、心智圖、比較表…' },
+    { k: 'interactive', n: '互動元件', ic: 'target', kind: 'ix', w: 480, d: '選擇題、是非題、翻牌、轉盤、計時器…' },
+    { k: 'sounds', n: '音效', ic: 'music', kind: 'sound', d: '答對、答錯、掌聲、鼓聲…即時合成免音檔' },
   ];
   const CAT = Object.fromEntries(CATS.map(c => [c.k, c]));
   const ALL = [];
@@ -59,7 +59,7 @@
   }
   function playSound(it) { try { new Function(LIB.sfxCore + '\n' + it.body)(); } catch (e) { console.warn(e); } }
 
-  /* ---------- 片段（給 Claude／複製用） ---------- */
+  /* ---------- 片段（給 AI／複製用） ---------- */
   function snippet(it) {
     const c = it.cat, s = { head: '', css: '', html: '', js: '', usage: '' };
     if (c === 'fonts') { s.head = it.head; s.css = it.css; s.html = it.html; s.usage = `在 <head> 放入字型連結，再把 class「${it.id}」加到元素上，或在 CSS 寫 font-family:'${it.family}'。`; }
@@ -220,8 +220,16 @@
     if (el.classList.contains('modal-pv')) { el._iv = setInterval(replay, it.dur * 1000 + 1000); }
   }
 
+  // 把元件放進一張「# 標題」投影片；同名投影片已存在就整張換掉，不會越疊越多
+  function withBlockSlide(src, title, ids) {
+    const page = `# ${title}\n` + ids.map(id => `[[${id}]]`).join('\n');
+    const parts = src.trim().split(/\n---\n/);
+    const i = parts.findIndex(p => p.trim().split('\n')[0].trim() === `# ${title}`);
+    if (i >= 0) parts[i] = page; else parts.push(page);
+    return parts.join('\n---\n');
+  }
   /* ---------- 素材籃 ---------- */
-  let basket = store.get('sal-basket', []).filter(id => BY_ID[id]);
+  let basket = store.get('sal-basket', []); if (!Array.isArray(basket)) basket = []; basket = [...new Set(basket)].filter(id => BY_ID[id]);
   function saveBasket() { store.set('sal-basket', basket); $('#basketCount').textContent = basket.length; renderBasket(); syncCards(); }
   function toggleBasket(id) {
     const i = basket.indexOf(id);
@@ -267,7 +275,8 @@
       if (['titleEffects', 'bullets', 'imageStyles', 'easings', 'sequences'].includes(it.cat)) s[STYLE_KEY[it.cat]] = it.id;
     });
     const blocks = basket.filter(id => INSERTABLE.has(BY_ID[id].cat));
-    if (blocks.length) s.src = s.src.trim() + '\n---\n# 素材籃的元件\n' + blocks.map(id => `[[${id}]]`).join('\n');
+    if (!basket.length) return toast('素材籃是空的，先加入一些素材');
+    if (blocks.length) s.src = withBlockSlide(s.src, '素材籃的元件', blocks);
     delete s._f; store.set('sal-studio', s); openDrawer(false); location.hash = '#studio'; route(); toast('已套用到簡報工作室');
   };
 
@@ -278,12 +287,12 @@
     render(it, $('#modalPv'), true);
     $('#mName').textContent = it.name; $('#mId').textContent = it.id; $('#mDesc').textContent = it.desc || '';
     const studioable = STYLE_KEY[it.cat] || INSERTABLE.has(it.cat);
-    $('#mActs').innerHTML = `<button class="btn primary cp">複製給 Claude</button><button class="btn add"></button>${studioable ? '<button class="btn use">用在簡報工作室</button>' : ''}${it.cat === 'sounds' ? '<button class="btn play">▶ 播放</button>' : ''}`;
+    $('#mActs').innerHTML = `<button class="btn primary cp">複製給 AI</button><button class="btn add"></button>${studioable ? '<button class="btn use">用在簡報工作室</button>' : ''}${it.cat === 'sounds' ? '<button class="btn play">▶ 播放</button>' : ''}`;
     $('#mActs .cp').onclick = () => copy(promptFor(it));
     $('#mActs .add').onclick = () => toggleBasket(it.id);
     if (studioable) $('#mActs .use').onclick = () => useInStudio(it);
     if (it.cat === 'sounds') $('#mActs .play').onclick = () => playSound(it);
-    const tabs = [['prompt', '給 Claude 的提示詞', promptFor(it)]];
+    const tabs = [['prompt', '給 AI 的提示詞', promptFor(it)]];
     if (s.head) tabs.push(['head', 'HEAD', s.head]);
     if (s.css) tabs.push(['css', 'CSS', s.css]);
     if (s.html) tabs.push(['html', 'HTML', s.html]);
@@ -293,13 +302,17 @@
     $$('#mTabs [data-i]').forEach(b => b.onclick = () => show(+b.dataset.i));
     $('#mTabs .cp-tab').onclick = () => copy(tabs[+$('#mTabs').dataset.cur][2]);
     show(0); syncCards();
+    if (!$('#modal').classList.contains('open')) lastFocus = document.activeElement;
     $('#modal').classList.add('open');
-    requestAnimationFrame(() => fit($('#modalPv')));
+    requestAnimationFrame(() => { fit($('#modalPv')); $('#modalClose').focus(); });
   }
   function closeModal() {
     const pv = $('#modalPv'); clearInterval(pv._iv); demos.forEach(d => { if (d.el === pv) { d.off(); demos.delete(d); } });
+    const was = $('#modal').classList.contains('open');
     pv.innerHTML = ''; $('#modal').classList.remove('open'); current = null;
+    if (was && lastFocus && document.contains(lastFocus)) lastFocus.focus();
   }
+  let lastFocus = null;
   $('#modalClose').onclick = closeModal;
   $('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); openDrawer(false); } });
@@ -314,11 +327,11 @@
   let groupFilter = '';
   function route() {
     demos.forEach(d => { if (!d.el.closest('#modal')) { d.off(); demos.delete(d); } });
-    const h = decodeURIComponent(location.hash.slice(1)) || 'home';
+    let h; try { h = decodeURIComponent(location.hash.slice(1)) || 'home'; } catch (e) { h = 'home'; }
     const q = $('#q').value.trim();
     $('#side').classList.remove('open');
-    if (q) { renderSide(''); return renderSearch(q); }
     stopPick();
+    if (q) { renderSide(''); return renderSearch(q); }
     if (h.startsWith('pick')) { renderSide('pick'); return renderPick(h.split('/')[1] || 'templates'); }
     renderSide(h);
     if (h === 'studio') return renderStudio();
@@ -331,13 +344,15 @@
 
   function cardHtml(it) {
     const on = basket.includes(it.id);
-    return `<div class="card ${on ? 'in-basket' : ''}" data-id="${it.id}"><div class="pv"></div><div class="meta"><b>${esc(it.name)}</b><code>${it.id}</code><p>${esc(it.desc || '')}</p></div><div class="acts"><button class="btn sm cp">複製給 Claude</button><button class="btn sm add ${on ? 'on' : ''}">${on ? '✓ 已加入' : '＋ 素材籃'}</button></div></div>`;
+    return `<div class="card ${on ? 'in-basket' : ''}" data-id="${it.id}"><div class="pv"></div><div class="meta"><b>${esc(it.name)}</b><code>${it.id}</code><p>${esc(it.desc || '')}</p></div><div class="acts"><button class="btn sm cp">複製給 AI</button><button class="btn sm add ${on ? 'on' : ''}">${on ? '✓ 已加入' : '＋ 素材籃'}</button></div></div>`;
   }
   function mountCards(root) {
     $$('.card', root).forEach(card => {
       const it = BY_ID[card.dataset.id], pv = card.querySelector('.pv');
       render(it, pv); ro.observe(pv);
+      pv.setAttribute('role', 'button'); pv.tabIndex = 0; pv.setAttribute('aria-label', `看「${it.name}」的大圖與程式碼`);
       pv.addEventListener('click', () => openModal(it));
+      pv.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(it); } });
       card.querySelector('.cp').onclick = () => copy(promptFor(it));
       card.querySelector('.add').onclick = () => toggleBasket(it.id);
     });
@@ -346,7 +361,7 @@
     const c = CAT[k], items = LIB.items[k];
     const groups = [...new Set(items.map(i => i.group || (i.tags || [])[0]).filter(Boolean))];
     const list = groupFilter ? items.filter(i => (i.group || (i.tags || [])[0]) === groupFilter) : items;
-    $('#view').innerHTML = `<div class="page-head"><div><h1>${c.n} <small class="muted" style="font-size:15px;font-weight:400">${items.length} 個</small></h1><p>${c.d}。點預覽看大圖與程式碼，${c.kind === 'transition' || c.kind === 'anim' ? '滑鼠移上去會播放，' : ''}按「複製給 Claude」直接貼進對話。</p></div></div>` +
+    $('#view').innerHTML = `<div class="page-head"><div><h1>${c.n} <small class="muted" style="font-size:15px;font-weight:400">${items.length} 個</small></h1><p>${c.d}。點預覽看大圖與程式碼，${c.kind === 'transition' || c.kind === 'anim' ? '滑鼠移上去會播放，' : ''}按「複製給 AI」直接貼進 AI 對話。</p></div></div>` +
       (groups.length > 1 ? `<div class="chips"><button class="chip ${groupFilter ? '' : 'on'}" data-g="">全部</button>${groups.map(g => `<button class="chip ${g === groupFilter ? 'on' : ''}" data-g="${esc(g)}">${esc(g)}</button>`).join('')}</div>` : '') +
       `<div class="grid ${c.wide ? 'wide' : ''}">${list.map(cardHtml).join('')}</div>`;
     $$('.chip').forEach(b => b.onclick = () => { groupFilter = b.dataset.g; renderCat(k); });
@@ -361,8 +376,8 @@
   }
   function renderHome() {
     const total = ALL.length;
-    $('#view').innerHTML = `<section class="hero"><h1>簡報素材庫</h1><p>共 <b>${CATS.length}</b> 類、<b>${total}</b> 個網頁簡報素材。每個素材都附有預覽和可直接使用的程式碼。按「複製給 Claude」，貼進對話就能請 Claude 幫你做簡報；也可以在「簡報工作室」直接組成一份能播放、能下載的網頁簡報。</p><div class="row"><a class="btn primary" href="#studio">開始做簡報</a><a class="btn" href="#pick/templates">一覽挑選所有風格</a><a class="btn" href="image.html">圖片生成素材庫</a><a class="btn" href="video.html">影片生成素材庫</a><a class="btn" href="#interactive">看互動元件</a></div></section>
-      <div class="howto"><div><b>① 挑素材</b><p>在各分類點預覽可以看大圖、程式碼；滑鼠移到轉場和動畫上會自動播放。</p></div><div><b>② 複製或加入素材籃</b><p>單個素材按「複製給 Claude」；想一次用很多個，就先加入素材籃，再一鍵複製全部。</p></div><div><b>③ 貼到對話或工作室</b><p>貼進 Claude 對話說「幫我用這些素材做簡報」，或在工作室用簡單語法直接排版、播放、下載。</p></div></div>
+    $('#view').innerHTML = `<section class="hero"><h1>簡報素材庫</h1><p>共 <b>${CATS.length}</b> 類、<b>${total}</b> 個網頁簡報素材。每個素材都附有預覽和可直接使用的程式碼。按「複製給 AI」，貼進 ChatGPT、Gemini 或 Claude 的對話，就能請 AI 幫你做簡報；也可以在「簡報工作室」直接組成一份能播放、能下載的網頁簡報。</p><div class="row"><a class="btn primary" href="#studio">開始做簡報</a><a class="btn" href="#pick/templates">一覽挑選所有風格</a><a class="btn" href="image.html">圖片生成素材庫</a><a class="btn" href="video.html">影片生成素材庫</a><a class="btn" href="#interactive">看互動元件</a></div></section>
+      <div class="howto"><div><b>① 挑素材</b><p>在各分類點預覽可以看大圖、程式碼；滑鼠移到轉場和動畫上會自動播放。</p></div><div><b>② 複製或加入素材籃</b><p>單個素材按「複製給 AI」；想一次用很多個，就先加入素材籃，再一鍵複製全部。</p></div><div><b>③ 貼到對話或工作室</b><p>貼進 ChatGPT、Gemini 或 Claude，說「幫我用這些素材做簡報」，或在工作室用簡單語法直接排版、播放、下載。</p></div></div>
       <h2 class="sec">素材分類</h2><div class="cat-grid">${CATS.map(c => `<a class="cat-card" href="#${c.k}"><i>${svg(c.ic, 22)}</i><div><b>${c.n}<span>${LIB.items[c.k].length} 個</span>${c.isNew ? '<em class="new">新增</em>' : ''}</b><p>${c.d}</p></div></a>`).join('')}</div>`;
   }
 
@@ -391,7 +406,12 @@
 @bg bg-g-warm
 [[ly-thanks]]`;
   const DEF = { tp: 'tp-beige', hf: '', bf: '', pl: '', bg: '', tr: 'tr-fade', an: 'an-fade-up', sx: '', te: '', bl: '', im: '', ez: '', sq: '', pn: true, title: '我的網頁簡報', src: DEFAULT_SRC };
-  const studioState = () => Object.assign({}, DEF, store.get('sal-studio', {}));
+  const studioState = () => {
+    let raw = store.get('sal-studio', {}); if (!raw || typeof raw !== 'object' || Array.isArray(raw)) raw = {};
+    const o = Object.assign({}, DEF, raw);
+    for (const k in DEF) if (typeof o[k] !== typeof DEF[k]) o[k] = DEF[k];   // 型別不對就用預設
+    return o;
+  };
   function useInStudio(it) {
     const s = studioState();
     if (STYLE_KEY[it.cat]) s[STYLE_KEY[it.cat]] = it.id;
@@ -427,8 +447,8 @@
         else { html += `<p${A()}>${inline(l)}</p>`; kinds.p++; }
       });
       flush();
-      if (tp && BY_ID[tp]) usedTp.add(tp); else tp = '';
-      if (bg && BY_ID[bg]) usedBg.add(bg); else bg = '';
+      if (tp && BY_ID[tp] && BY_ID[tp].cat === 'templates') usedTp.add(tp); else { if (tp) html += `<p${A()} style="color:#c0392b">@tp 後面要放模板 ID（tp- 開頭），「${esc(tp)}」不是模板</p>`; tp = ''; }
+      if (bg && BY_ID[bg] && BY_ID[bg].cat === 'backgrounds') usedBg.add(bg); else { if (bg) html += `<p${A()} style="color:#c0392b">@bg 後面要放背景 ID（bg- 開頭），「${esc(bg)}」不是背景</p>`; bg = ''; }
       const isTitle = kinds.h1 && !kinds.other && kinds.p <= 1;
       return { html, tp, bg, isTitle };
     }).filter(s => s.html);
@@ -437,8 +457,9 @@
 
   function buildDeck(s, opts = {}) {
     const { slides, used, usedTp, usedBg } = parseSlides(s.src);
-    const tp = BY_ID[s.tp] || BY_ID['tp-minimal'];
-    usedTp.add(tp.id); if (s.bg && BY_ID[s.bg]) usedBg.add(s.bg);
+    const tp = (BY_ID[s.tp] && BY_ID[s.tp].cat === 'templates') ? BY_ID[s.tp] : BY_ID['tp-minimal'];
+    if (s.bg && !(BY_ID[s.bg] && BY_ID[s.bg].cat === 'backgrounds')) s = Object.assign({}, s, { bg: '' });
+    usedTp.add(tp.id); if (s.bg) usedBg.add(s.bg);
     const tr = BY_ID[s.tr] || BY_ID['tr-fade'], an = BY_ID[s.an], sx = BY_ID[s.sx], pl = BY_ID[s.pl];
     const te = BY_ID[s.te], bl = BY_ID[s.bl], im = BY_ID[s.im], ez = BY_ID[s.ez], sq = BY_ID[s.sq] || BY_ID['sq-stagger'];
     const extraCls = [te, bl, im].filter(Boolean).map(x => ' ' + x.id).join('');
@@ -463,7 +484,8 @@
       ...[...used].map(id => BY_ID[id].css || ''),
       '.bar{position:fixed;left:0;bottom:0;height:4px;background:var(--bar,#c98b4e);transition:width .3s;z-index:5}',
       '.hint{position:fixed;right:14px;bottom:12px;font:12px system-ui,sans-serif;color:rgba(255,255,255,.45);z-index:5;pointer-events:none}',
-      '@media print{html,body{overflow:visible;background:#fff}.deck{position:static;transform:none}.slide{display:flex!important;position:relative;page-break-after:always}.bar,.hint{display:none}}',
+      '@page{size:1280px 720px;margin:0}',
+      '@media print{html,body{overflow:visible;height:auto;background:#fff}.deck{position:static;transform:none;width:1280px;height:auto;overflow:visible}.slide{display:flex!important;position:relative;width:1280px;height:720px;break-after:page;page-break-after:always;animation:none!important;opacity:1!important;transform:none!important}.slide .anim,.slide .anim.wait{visibility:visible!important;animation:none!important;opacity:1!important;transform:none!important}.pageno{display:block}.bar,.hint{display:none}}',
     ].filter(Boolean).join('\n');
     const N = slides.length;
     const body = slides.map((sl, i) => `<section class="slide ${sl.tp || tp.id}${extraCls}${sl.bg ? ' ' + sl.bg : (s.bg ? ' ' + s.bg : '')}${sl.isTitle ? ' title-slide' : ''}${i === 0 ? ' active' : ''}">\n${sl.html}${s.pn && i > 0 ? `<div class="pageno">${i + 1} / ${N}</div>` : ''}\n</section>`).join('\n');
@@ -474,7 +496,7 @@ function play(sl){sl.classList.remove('play');var A=[].slice.call(sl.querySelect
 function reveal(){var w=S[cur].querySelector('.anim.wait');if(!w)return false;w.style.setProperty('--d','0s');w.classList.remove('wait');return true}
 function upd(){bar.style.width=((cur+1)/S.length*100)+'%';if(!window.__start)try{history.replaceState(null,'','#'+(cur+1))}catch(e){}parent!==window&&parent.postMessage({deck:1,cur:cur,n:S.length},'*')}
 function go(n){if(CLICK&&n===cur+1&&!busy&&reveal())return;if(n<0||n>=S.length||n===cur||busy)return;var a=S[cur],b=S[n];busy=1;b.classList.add('active',TR+'-in');a.classList.add(TR+'-out');a.style.zIndex=TOP?3:1;b.style.zIndex=TOP?1:3;a.style.display='flex';play(b);${sx ? sx.fn + '();' : ''}cur=n;upd();setTimeout(function(){a.classList.remove('active','play',TR+'-out');a.style.display='';a.style.zIndex='';b.classList.remove(TR+'-in');b.style.zIndex='';busy=0},DUR+30)}
-addEventListener('keydown',function(e){var k=e.key;if(/^(ArrowRight|ArrowDown|PageDown| |Enter)$/.test(k)){e.preventDefault();go(cur+1)}else if(/^(ArrowLeft|ArrowUp|PageUp|Backspace)$/.test(k)){e.preventDefault();go(cur-1)}else if(k==='Home')go(0);else if(k==='End')go(S.length-1);else if(k==='f'||k==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}});
+addEventListener('keydown',function(e){var k=e.key;if(e.target.closest&&e.target.closest('input,button,select,textarea,[contenteditable],[class^="ix-"] [tabindex],[role="slider"]')&&k!=='Escape'&&k!=='PageDown'&&k!=='PageUp')return;if(/^(ArrowRight|ArrowDown|PageDown| |Enter)$/.test(k)){e.preventDefault();go(cur+1)}else if(/^(ArrowLeft|ArrowUp|PageUp|Backspace)$/.test(k)){e.preventDefault();go(cur-1)}else if(k==='Home')go(0);else if(k==='End')go(S.length-1);else if(k==='f'||k==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}});
 D.addEventListener('click',function(e){if(e.target.closest('button,input,a,label,details,summary,select,textarea,canvas,[class^="ix-"],[class*=" ix-"]'))return;var r=D.getBoundingClientRect();go(e.clientX<r.left+r.width*.25?cur-1:cur+1)});
 var tx=0;addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{passive:true});addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)go(d<0?cur+1:cur-1)});
 addEventListener('message',function(e){var m=e.data||{};if(m.go==='next')go(cur+1);else if(m.go==='prev')go(cur-1);else if(typeof m.go==='number')go(m.go)});
@@ -510,7 +532,7 @@ ${ixJs}
     const opt = (cat, sel, none) => (none ? `<option value="">${none}</option>` : '') + LIB.items[cat].map(i => `<option value="${i.id}" ${i.id === sel ? 'selected' : ''}>${esc(i.name)}</option>`).join('');
     const grouped = (cat, sel, none) => { const g = {}; LIB.items[cat].forEach(i => (g[i.group] = g[i.group] || []).push(i)); return (none ? `<option value="">${none}</option>` : '') + Object.entries(g).map(([k, arr]) => `<optgroup label="${k}">${arr.map(i => `<option value="${i.id}" ${i.id === sel ? 'selected' : ''}>${esc(i.name)}</option>`).join('')}</optgroup>`).join(''); };
     const ins = [...INSERTABLE].map(k => `<optgroup label="${CAT[k].n}">${LIB.items[k].map(i => `<option value="${i.id}">${esc(i.name)}（${i.id}）</option>`).join('')}</optgroup>`).join('');
-    $('#view').innerHTML = `<div class="page-head"><div><h1>簡報工作室</h1><p>選模板、字型、轉場，用簡單的文字語法寫內容，就能播放、下載成網頁簡報，或整份複製給 Claude 繼續加工。</p></div></div>
+    $('#view').innerHTML = `<div class="page-head"><div><h1>簡報工作室</h1><p>選模板、字型、轉場，用簡單的文字語法寫內容，就能播放、下載成網頁簡報，或整份複製給 AI（ChatGPT、Gemini、Claude）繼續加工。</p></div></div>
     <div class="studio">
       <div class="panel">
         <h3>外觀設定</h3>
@@ -543,20 +565,21 @@ ${ixJs}
           <span class="sp"></span>
           <button class="btn" id="pPlay">▶ 全螢幕播放</button>
           <button class="btn" id="pDl">下載 HTML</button>
-          <button class="btn primary" id="pCopy">複製給 Claude</button>
+          <button class="btn primary" id="pCopy">複製給 AI</button>
         </div>
         <p class="muted" style="font-size:13px;line-height:1.7">提示：預覽中可以直接點互動元件試玩。下載的 HTML 雙擊就能用瀏覽器播放（方向鍵換頁、F 全螢幕、Ctrl+P 可列印成 PDF）。</p>
       </div>
     </div>`;
     const fields = { title: '#sTitle', tp: '#sTp', hf: '#sHf', bf: '#sBf', pl: '#sPl', bg: '#sBg', tr: '#sTr', an: '#sAn', sx: '#sSx', te: '#sTe', bl: '#sBl', im: '#sIm', ez: '#sEz', sq: '#sSq' };
     let cur = 0, t;
-    const read = () => { const o = {}; for (const k in fields) o[k] = $(fields[k]).value; o.pn = $('#sPn').checked; o.src = $('#deckSrc').value; return o; };
+    const read = () => { if (!$('#deckSrc')) return null; const o = {}; for (const k in fields) o[k] = $(fields[k]).value; o.pn = $('#sPn').checked; o.src = $('#deckSrc').value; return o; };
+    const saveNow = () => { const o = read(); if (o) store.set('sal-studio', o); };
     const refresh = (keep) => {
-      const st = read(); store.set('sal-studio', st);
+      const st = read(); if (!st) return; store.set('sal-studio', st);
       const f = $('#stageFrame');
       f.srcdoc = buildDeck(st, { preview: 1 }).replace('<script>', `<script>window.__start=${keep ? cur + 1 : 1};`);
     };
-    const later = () => { clearTimeout(t); t = setTimeout(() => refresh(true), 450); };
+    const later = () => { saveNow(); clearTimeout(t); t = setTimeout(() => refresh(true), 450); };
     Object.values(fields).forEach(sel => $(sel).addEventListener('input', later));
     $('#sPn').addEventListener('change', () => refresh(true));
     $('#deckSrc').addEventListener('input', later);
@@ -575,7 +598,7 @@ ${ixJs}
       const st = read(); const names = k => (BY_ID[st[k]] || {}).name || '（模板預設）';
       const used = [...parseSlides(st.src).used];
       const txt = `請幫我把下面這份網頁簡報做得更完整、更好看（保留單一 HTML 檔、1280×720 投影片、方向鍵換頁）。\n目前設定：模板「${names('tp')}」、標題字型 ${names('hf')}、內文字型 ${names('bf')}、轉場「${names('tr')}」、元素動畫「${st.an ? names('an') : '無'}」${st.sx ? '、換頁音效「' + names('sx') + '」' : ''}。\n使用的元件：${used.length ? used.join('、') : '無'}\n\n以下是完整的 HTML：\n\n\`\`\`html\n${buildDeck(st)}\n\`\`\`\n\n如果有不清楚或缺少的資訊（例如用途、對象、要放的文字），請先問我，確認後再開始做。`;
-      copy(txt, '已複製整份簡報，可以貼給 Claude 了');
+      copy(txt, '已複製整份簡報，可以貼給 ChatGPT、Gemini 或 Claude 了');
     };
     refresh(false);
   }
@@ -588,7 +611,11 @@ ${ixJs}
   const MOTION = new Set(['transitions', 'animations', 'easings', 'sequences']);
   const SLIDEY = new Set(['templates', 'palettes', 'backgrounds', 'titleEffects', 'bullets', 'imageStyles', 'sequences']);
   function pickState() {
-    const p = Object.assign({ text: '健康生活小學堂', size: 40, speed: 1, sel: {}, multi: [] }, store.get('sal-pick', {}));
+    let raw = store.get('sal-pick', {}); if (!raw || typeof raw !== 'object' || Array.isArray(raw)) raw = {};
+    const p = Object.assign({ text: '健康生活小學堂', size: 40, speed: 1, sel: {}, multi: [] }, raw);
+    if (!p.sel || typeof p.sel !== 'object' || Array.isArray(p.sel)) p.sel = {};
+    if (!Array.isArray(p.multi)) p.multi = [];
+    if (typeof p.text !== 'string') p.text = '健康生活小學堂';
     if (p.ft || p.tr || p.an) { p.sel = Object.assign({ hf: p.ft || '', tr: p.tr || '', an: p.an || '' }, p.sel); delete p.ft; delete p.tr; delete p.an; }
     p.multi = (p.multi || []).filter(id => BY_ID[id]);
     return p;
@@ -624,10 +651,10 @@ ${ixJs}
 
     const refreshDock = () => {
       const st = pickState();
-      $$('.pk-tile', grid).forEach(el => el.classList.toggle('sel', multi ? st.multi.includes(el.dataset.id) : st.sel[key] === el.dataset.id));
+      $$('.pk-tile', grid).forEach(el => { const on = multi ? st.multi.includes(el.dataset.id) : st.sel[key] === el.dataset.id; el.classList.toggle('sel', on); el.setAttribute('aria-pressed', on); });
       const styleChips = PICK_STYLE.filter(k => st.sel[STYLE_KEY[k]] && BY_ID[st.sel[STYLE_KEY[k]]]).map(k => `<span class="pk-pill" data-k="${STYLE_KEY[k]}">${PICK_NAME(k)}：<b>${esc(BY_ID[st.sel[STYLE_KEY[k]]].name)}</b><button aria-label="移除">✕</button></span>`).join('');
       const comps = st.multi.length ? `<span class="pk-pill" data-k="__multi">元件 <b>${st.multi.length}</b> 個<button aria-label="清除元件">✕</button></span>` : '';
-      $('#pkDock').innerHTML = `<div class="pk-picked">${styleChips + comps || '<span class="muted">還沒有選任何項目，點上方卡片開始挑選</span>'}</div><div class="pk-acts"><button class="btn sm" id="pkClear">全部清除</button><button class="btn sm" id="pkBasket">加入素材籃</button><button class="btn sm" id="pkCopy">複製給 Claude</button><button class="btn sm primary" id="pkStudio">套用到簡報工作室</button></div>`;
+      $('#pkDock').innerHTML = `<div class="pk-picked">${styleChips + comps || '<span class="muted">還沒有選任何項目，點上方卡片開始挑選</span>'}</div><div class="pk-acts"><button class="btn sm" id="pkClear">全部清除</button><button class="btn sm" id="pkBasket">加入素材籃</button><button class="btn sm" id="pkCopy">複製給 AI</button><button class="btn sm primary" id="pkStudio">套用到簡報工作室</button></div>`;
       const chosen = () => { const s2 = pickState(); return [...PICK_STYLE.map(k => BY_ID[s2.sel[STYLE_KEY[k]]]).filter(Boolean), ...s2.multi.map(id => BY_ID[id])]; };
       $$('.pk-pill button', $('#pkDock')).forEach(b => b.onclick = () => { const s2 = pickState(), k = b.parentNode.dataset.k; if (k === '__multi') s2.multi = []; else delete s2.sel[k]; savePick(s2); refreshDock(); });
       $('#pkClear').onclick = () => { const s2 = pickState(); s2.sel = {}; s2.multi = []; savePick(s2); refreshDock(); };
@@ -636,10 +663,11 @@ ${ixJs}
       $('#pkStudio').onclick = () => {
         const s2 = pickState(), c = chosen(); if (!c.length) return toast('還沒有選任何項目');
         const sd = studioState(); Object.entries(s2.sel).forEach(([k, v]) => { if (v && BY_ID[v]) sd[k] = v; });
-        if (s2.multi.length) sd.src = sd.src.trim() + '\n---\n# 挑選的元件\n' + s2.multi.map(id => `[[${id}]]`).join('\n');
+        if (s2.multi.length) sd.src = withBlockSlide(sd.src, '挑選的元件', s2.multi);
         store.set('sal-studio', sd); location.hash = '#studio'; toast('已套用到簡報工作室');
       };
     };
+    grid.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pk-tile')) { e.preventDefault(); e.target.click(); } });
     grid.addEventListener('click', e => {
       const tile = e.target.closest('.pk-tile'); if (!tile) return;
       if (e.target.closest('.pk-more')) return openModal(BY_ID[tile.dataset.id]);
@@ -708,7 +736,7 @@ ${ixJs}
     else if (tab === 'animations') body = `<div class="pk-astage"><div class="pk-anim ${it.loop ? it.id : ''}"><span class="pk-sample">${esc(ps.text || '示範文字')}</span></div></div>`;
     else if (tab === 'sounds') body = `<div class="pk-snd"><button class="pk-play" aria-label="播放 ${esc(it.name)}">▶</button></div>`;
     else body = `<div class="pk-pv"></div>`;
-    return `<div class="pk-tile" data-id="${it.id}" data-g="${g}">${body}${cap}</div>`;
+    return `<div class="pk-tile" data-id="${it.id}" data-g="${g}" role="button" tabindex="0" aria-pressed="false" aria-label="${esc(it.name)}">${body}${cap}</div>`;
   }
   function mountPickTiles(tab, grid, ps) {
     $$('.pk-pv', grid).forEach(pv => {

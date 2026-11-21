@@ -164,13 +164,13 @@
   items.presets = [
     P('vp-health-open', '衛教短片開場', '溫暖親切、建立信任', ['#3fa58b', '#1f6f8b'], ['cm-push', 'vs-mcu', 'va-eye', 'ac-talk', 'sp-normal', 'vl-window', 'vy-documentary', 'vw-indoor', 'mu-piano', 'fm-16-9', 'fm-10s'], '一位職能治療師在明亮的復健教室裡向鏡頭打招呼'),
     P('vp-elder-story', '長者生命故事', '溫柔、懷舊、有情感', ['#c98b4e', '#8a5a32'], ['cm-push', 'vs-cu', 'va-eye', 'ac-page', 'sp-slow', 'vl-window', 'vy-8mm', 'vt-fade', 'vw-indoor', 'mu-strings', 'fm-16-9'], '阿嬤坐在藤椅上翻閱老相簿，露出微笑'),
-    P('vp-shorts-hook', '短影音開頭', '前三秒抓住注意力', ['#e8622c', '#c2410c'], ['cm-zoom', 'vs-cu', 'va-low', 'ac-smile', 'sp-ramp', 'vl-studio', 'vy-commercial', 'vt-whip', 'mu-upbeat', 'fm-9-16', 'fm-5s'], '一位阿公對著鏡頭比讚，背景是熱鬧的活動現場'),
+    P('vp-shorts-hook', '短影音開頭', '前三秒抓住注意力', ['#e8622c', '#c2410c'], ['cm-zoom', 'vs-cu', 'va-low', 'ac-smile', 'sp-ramp', 'vl-studio', 'vy-commercial', 'mu-upbeat', 'fm-9-16', 'fm-5s'], '一位阿公對著鏡頭比讚，背景是熱鬧的活動現場'),
     P('vp-event', '活動精華', '熱鬧、充滿笑容', ['#d97706', '#b45309'], ['cm-handheld', 'vs-ms', 'va-eye', 'ac-laugh', 'sp-normal', 'vl-golden', 'vy-documentary', 'vt-cut', 'mu-upbeat', 'fm-16-9', 'fm-15s'], '社區據點的長者們一起玩遊戲、開懷大笑'),
-    P('vp-product', '產品展示', '乾淨、聚焦細節', ['#6b7280', '#1f2937'], ['cm-orbit', 'vs-ms', 'va-eye', 'ac-product-spin', 'sp-slow', 'vl-studio', 'vy-minimal', 'mu-electronic', 'fm-1-1', 'fm-loop'], '一支木質握柄的助行器'),
+    P('vp-product', '產品展示', '乾淨、聚焦細節', ['#6b7280', '#1f2937'], ['cm-orbit', 'vs-ms', 'va-eye', 'sp-slow', 'vl-studio', 'vy-minimal', 'mu-electronic', 'fm-1-1', 'fm-loop'], '一支木質握柄的助行器'),
     P('vp-scenery', '風景空鏡', '開場或轉場的大景', ['#4f7a5e', '#2f4a3a'], ['cm-drone', 'vs-wide', 'va-high', 'sp-normal', 'vl-golden', 'vy-cinematic', 'vw-mist', 'mu-orchestral', 'fm-16-9', 'fm-10s'], '清晨被薄霧籠罩的山間小鎮'),
     P('vp-cooking', '料理示範', '手部特寫、生活感', ['#5f7a61', '#2f3b30'], ['cm-static', 'vs-ecu', 'va-top', 'ac-hands', 'sp-normal', 'vl-window', 'vy-japanese', 'vt-cut', 'mu-guitar', 'fm-9-16'], '一雙手在木砧板上切蔬菜，準備健康餐'),
     P('vp-exercise', '運動教學', '清楚示範每個動作', ['#2f8f5b', '#1f6f4a'], ['cm-static', 'vs-full', 'va-eye', 'ac-exercise', 'sp-normal', 'vl-soft', 'vy-commercial', 'vt-cut', 'mu-lofi', 'fm-16-9'], '一位長者坐在椅子上做抬腿伸展'),
-    P('vp-memory-photo', '老照片動起來', '靜態照片加上輕微動態', ['#a0703c', '#5a3d25'], ['cm-push', 'vs-ms', 'ac-hair-wind', 'sp-slow', 'vy-8mm', 'vt-fade', 'mu-piano', 'fm-4-5', 'fm-5s'], '1970 年代的全家福老照片，大家微笑看著鏡頭'),
+    P('vp-memory-photo', '老照片動起來', '靜態照片加上輕微動態', ['#a0703c', '#5a3d25'], ['cm-push', 'vs-ms', 'ac-hair-wind', 'sp-slow', 'vy-8mm', 'mu-piano', 'fm-4-5', 'fm-5s'], '1970 年代的全家福老照片，大家微笑看著鏡頭'),
     P('vp-brand', '機構形象片', '專業、溫暖、值得信任', ['#1f3a5f', '#0f1b2d'], ['cm-truck', 'vs-ms', 'va-eye', 'ac-walk', 'sp-slow', 'vl-golden', 'vy-cinematic', 'vt-fade', 'mu-orchestral', 'fm-16-9', 'fm-15s'], '照服員陪著長輩在庭院散步，陽光灑落'),
     P('vp-explainer', '動畫解說', '把複雜的事講簡單', ['#4f46e5', '#3730a3'], ['cm-static', 'vs-ms', 'ac-talk', 'sp-normal', 'vy-3d', 'vt-zoom', 'mu-ukulele', 'fm-16-9', 'fm-15s'], '可愛的心臟角色解釋血壓是什麼'),
   ];
@@ -190,9 +190,10 @@
       { k: 'weather', n: '天氣氛圍', pv: 'fx', mode: 'single', d: '環境與時間（預覽會動）' },
       { k: 'transitions', n: '轉場', pv: 'trans', mode: 'single', d: '鏡頭之間怎麼銜接' },
       { k: 'music', n: '配樂', pv: 'music', mode: 'single', d: '音樂情緒（條紋跳動快慢代表節奏）' },
-      { k: 'format', n: '比例時長', pv: 'ratio', mode: 'multi', d: '平台尺寸與影片長度' },
+      { k: 'format', n: '比例時長', pv: 'ratio', mode: 'multi', d: '比例、長度各選一個，可加無縫循環' },
     ],
     items,
+    exclusive: [['fm-9-16', 'fm-16-9', 'fm-1-1', 'fm-4-5'], ['fm-5s', 'fm-10s', 'fm-15s']],
     build(subject, get) {
       const j = k => get(k).map(i => i.en).join(', ');
       const lines = [

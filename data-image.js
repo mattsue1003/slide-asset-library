@@ -170,13 +170,13 @@
     Object.assign(I('ps-handout-land', '衛教單張（橫式）', 'landscape health education handout preset', 'A4 橫式，標題＋三欄重點，適合張貼、投影', { t: 'preset', c: ['#2f6f8f', '#1f4a5f'] }), { picks: ['st-flat', 'cp-center', 'lt-soft', 'cl-pastel', 'md-warm', 'ar-a4-land', 'q-handout', 'q-zh-text', 'q-clean-bg', 'ng-watermark'], subject: '糖尿病健康飲食衛教單張（橫式三欄），標題「糖尿病 健康飲食」，三欄重點：「定時定量吃飯」「多吃蔬菜」「少喝含糖飲料」，每欄一張小插圖' }),
     Object.assign(I('ps-elder-portrait', '長者溫馨人像', 'warm elder portrait preset', '自然真實、有溫度的人像', { t: 'preset', c: ['#c98b4e', '#8a5a32'] }), { picks: ['st-film', 'sh-mcu', 'an-eye', 'cp-thirds', 'lt-window', 'cl-warm', 'ln-85', 'ln-bokeh', 'md-warm', 'ar-4-5', 'q-natural-skin', 'q-elder', 'q-asian', 'ng-face', 'ng-plastic'], subject: '一位滿頭白髮的阿嬤在窗邊微笑，手上拿著老照片' }),
     Object.assign(I('ps-slide-bg', '簡報背景圖', 'presentation background preset', '留白給文字的乾淨背景', { t: 'preset', c: ['#4a6a85', '#1f2d3a'] }), { picks: ['st-photo', 'sh-wide', 'cp-negative', 'lt-soft', 'cl-muted', 'ln-bokeh', 'md-calm', 'ar-16-9', 'q-text-space', 'q-no-text', 'ng-text', 'ng-cluttered'], subject: '清晨的社區公園，遠處有幾位長者在散步' }),
-    Object.assign(I('ps-social', '社群貼文主視覺', 'social media key visual preset', '吸睛、適合 IG／FB', { t: 'preset', c: ['#e8622c', '#c2410c'] }), { picks: ['st-3d-cute', 'sh-ms', 'cp-center', 'lt-studio', 'cl-vivid', 'md-joy', 'ar-1-1', 'q-clean-bg', 'q-text-space', 'ng-text', 'ng-watermark'], subject: '一顆開心的藥丸角色舉著「按時吃藥」的小旗子' }),
-    Object.assign(I('ps-product', '商品白底照', 'product on white preset', '電商、型錄用', { t: 'preset', c: ['#6b7280', '#1f2937'] }), { picks: ['st-product', 'sh-detail', 'an-eye', 'cp-center', 'lt-studio', 'ln-50', 'md-pro', 'ar-1-1', 'q-white-bg', 'q-detail', 'ng-watermark', 'ng-text'], subject: '一支木質握柄的助行器' }),
+    Object.assign(I('ps-social', '社群貼文主視覺', 'social media key visual preset', '吸睛、適合 IG／FB', { t: 'preset', c: ['#e8622c', '#c2410c'] }), { picks: ['st-3d-cute', 'sh-ms', 'cp-center', 'lt-studio', 'cl-vivid', 'md-joy', 'ar-1-1', 'q-clean-bg', 'q-zh-text', 'ng-text', 'ng-watermark'], subject: '一顆開心的藥丸角色舉著「按時吃藥」的小旗子' }),
+    Object.assign(I('ps-product', '商品白底照', 'product on white preset', '電商、型錄用', { t: 'preset', c: ['#6b7280', '#1f2937'] }), { picks: ['st-product', 'an-eye', 'cp-center', 'lt-studio', 'ln-50', 'md-pro', 'ar-1-1', 'q-white-bg', 'q-detail', 'ng-watermark', 'ng-text'], subject: '一支木質握柄的助行器' }),
     Object.assign(I('ps-picture-book', '繪本故事頁', 'picture book page preset', '溫暖手繪，說故事用', { t: 'preset', c: ['#d9a441', '#b0602a'] }), { picks: ['st-picture-book', 'sh-full', 'cp-layers', 'lt-golden', 'cl-warm', 'md-cozy', 'ar-4-5', 'q-no-text', 'ng-creepy', 'ng-text'], subject: '阿公牽著孫子在稻田邊散步' }),
     Object.assign(I('ps-poster', '活動海報', 'event poster preset', '主視覺＋留標題空間', { t: 'preset', c: ['#c0392b', '#7a1f1f'] }), { picks: ['st-retro-poster', 'sh-ms', 'cp-negative', 'lt-hard', 'cl-earth', 'md-joy', 'ar-3-4', 'q-text-space', 'ng-text'], subject: '一群長者在社區活動中心跳舞' }),
-    Object.assign(I('ps-food', '料理美食', 'food photography preset', '健康餐、食譜', { t: 'preset', c: ['#5f7a61', '#2f3b30'] }), { picks: ['st-photo', 'sh-detail', 'an-top', 'cp-flatlay', 'lt-window', 'cl-cream', 'ln-50', 'md-fresh', 'ar-4-5', 'q-detail', 'ng-oversat'], subject: '一份少油少鹽的健康便當，有糙米飯、青菜和魚' }),
+    Object.assign(I('ps-food', '料理美食', 'food photography preset', '健康餐、食譜', { t: 'preset', c: ['#5f7a61', '#2f3b30'] }), { picks: ['st-photo', 'an-top', 'cp-flatlay', 'lt-window', 'cl-cream', 'ln-50', 'md-fresh', 'ar-4-5', 'q-detail', 'ng-oversat'], subject: '一份少油少鹽的健康便當，有糙米飯、青菜和魚' }),
     Object.assign(I('ps-memory', '懷舊回憶照', 'nostalgic memory preset', '像老相簿裡的照片', { t: 'preset', c: ['#a0703c', '#5a3d25'] }), { picks: ['st-film', 'sh-ms', 'cp-thirds', 'lt-golden', 'cl-faded', 'ln-grain', 'md-nostalgic', 'ar-3-2', 'q-asian', 'ng-plastic'], subject: '1970 年代台灣街頭的柑仔店，門口坐著老闆娘' }),
-    Object.assign(I('ps-icon', '扁平圖示', 'flat icon preset', '簡報、資訊圖用的小圖示', { t: 'preset', c: ['#4f46e5', '#3730a3'] }), { picks: ['st-icon', 'sh-detail', 'cp-center', 'lt-studio', 'cl-pastel', 'ar-1-1', 'q-white-bg', 'q-no-text', 'ng-text'], subject: '一個血壓計' }),
+    Object.assign(I('ps-icon', '扁平圖示', 'flat icon preset', '簡報、資訊圖用的小圖示', { t: 'preset', c: ['#4f46e5', '#3730a3'] }), { picks: ['st-icon', 'cp-center', 'lt-studio', 'cl-pastel', 'ar-1-1', 'q-white-bg', 'q-no-text', 'ng-text'], subject: '一個血壓計' }),
     Object.assign(I('ps-headshot', '專業形象照', 'professional headshot preset', '講者介紹、名片', { t: 'preset', c: ['#1f3a5f', '#0f1b2d'] }), { picks: ['st-editorial', 'sh-mcu', 'an-eye', 'cp-center', 'lt-studio', 'ln-85', 'ln-bokeh', 'md-pro', 'ar-4-5', 'q-natural-skin', 'q-asian', 'ng-face', 'ng-plastic'], subject: '一位穿著白袍的女性職能治療師，自然微笑' }),
     Object.assign(I('ps-ink', '東方水墨', 'ink painting preset', '節慶、文化主題', { t: 'preset', c: ['#3a3a3a', '#111'] }), { picks: ['st-ink', 'sh-wide', 'cp-negative', 'lt-overcast', 'cl-muted', 'md-calm', 'ar-3-4', 'q-text-space', 'ng-text'], subject: '山間小橋與一位撐傘的老人' }),
   ];
@@ -186,6 +186,16 @@
     sampleSubject: '一位微笑的阿嬤在社區公園打太極',
     samples: ['lt-backlit','lt-blue','lt-candle','lt-dappled','lt-golden','lt-hard','lt-highkey','lt-lowkey','lt-neon','lt-overcast','lt-rembrandt','lt-silhouette','lt-soft','lt-studio','lt-window','st-3d-cute','st-cinematic','st-clay','st-collage','st-colored-pencil','st-documentary','st-editorial','st-film','st-flat','st-icon','st-ink','st-isometric','st-japanese','st-line','st-oil','st-paper-cut','st-photo','st-picture-book','st-product','st-retro-poster','st-risograph','st-watercolor'],
     sampleBy: { styles: 'ChatGPT 生成', lighting: 'Nano Banana 生成' },
+    // 每組最多只能選一個：選了其中一個，其他的自動取消
+    exclusive: [['q-no-text', 'q-zh-text'], ['q-no-text', 'q-handout'], ['q-white-bg', 'q-clean-bg']],
+    // 選了單張／A4 版面，又選了拍人物用的鏡頭設定時提醒
+    warn(get) {
+      const page = [...get('quality'), ...get('ratios')].filter(i => ['q-handout', 'ar-a4', 'ar-a4-land'].includes(i.id));
+      if (!page.length) return null;
+      const cam = [...get('shots'), ...get('angles'), ...get('lens'), ...get('quality').filter(i => ['q-natural-skin', 'q-hands'].includes(i.id))];
+      if (!cam.length) return null;
+      return { msg: `你在做單張／A4 版面，但選了拍人物照用的「${cam.map(i => i.name).join('、')}」。AI 可能會畫成一張人物照片而不是版面，建議移除。`, ids: cam.map(i => i.id) };
+    },
     sampleSets: [
       { k: 'person', n: '人物', cats: ['styles', 'lighting'] },
       { k: 'handout', n: '糖尿病衛教單張', cats: ['styles'], dir: 'samples/handout', fit: 'contain', ids: ['st-3d-cute','st-cinematic','st-clay','st-collage','st-colored-pencil','st-documentary','st-editorial','st-film','st-flat','st-icon','st-ink','st-isometric','st-japanese','st-line','st-oil','st-paper-cut','st-photo','st-picture-book','st-product','st-retro-poster','st-risograph','st-watercolor'] },

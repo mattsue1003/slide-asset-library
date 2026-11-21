@@ -14,7 +14,14 @@
   G.cats.forEach(c => G.items[c.k].forEach(it => { it.cat = c.k; BY_ID[it.id] = it; }));
   const CAT = Object.fromEntries(G.cats.map(c => [c.k, c]));
   let st = store.get({ subject: G.sampleSubject, sel: {}, tab: G.cats[0].k, set: 'person' });
-  Object.keys(st.sel).forEach(k => { st.sel[k] = (st.sel[k] || []).filter(id => BY_ID[id]); });
+  // 舊版或壞掉的存檔：逐欄檢查型別，不合就用預設值
+  if (typeof st.subject !== 'string') st.subject = G.sampleSubject;
+  if (!st.sel || typeof st.sel !== 'object' || Array.isArray(st.sel)) st.sel = {};
+  Object.keys(st.sel).forEach(k => { st.sel[k] = CAT[k] && Array.isArray(st.sel[k]) ? st.sel[k].filter(id => BY_ID[id] && BY_ID[id].cat === k) : []; });
+  if (!CAT[st.tab]) st.tab = G.cats[0].k;
+  if (typeof st.set !== 'string') st.set = 'person';
+  const PRESET_SUBJECTS = new Set((G.items.presets || []).map(p => p.subject).filter(Boolean));
+  const EXCL = G.exclusive || [];
   const save = () => store.set(st);
 
   /* ---------- 共用插圖 ---------- */
@@ -84,6 +91,10 @@
   function renderDock() {
     const out = build(), ch = chosen();
     $('#gChips').innerHTML = ch.length ? ch.map(it => `<span class="g-chip" data-id="${it.id}"><em>${CAT[it.cat].n}</em>${esc(it.name)}<button aria-label="移除 ${esc(it.name)}">✕</button></span>`).join('') : '<span class="muted">還沒有選任何項目。先點左邊的「用途模板」最快。</span>';
+    const w = G.warn ? G.warn(k => (st.sel[k] || []).map(x => BY_ID[x])) : null;
+    let wb = $('#gWarn'); if (!wb) { wb = document.createElement('div'); wb.id = 'gWarn'; wb.className = 'g-warn'; wb.setAttribute('role', 'status'); $('#gChips').after(wb); }
+    wb.hidden = !w;
+    if (w) wb.innerHTML = `<p>${esc(w.msg)}</p>${w.ids && w.ids.length ? `<button type="button" class="btn sm" data-drop="${w.ids.join(',')}">移除這 ${w.ids.length} 項</button>` : ''}`;
     $('#gZh').textContent = out.zh;
     $('#gEn').textContent = out.en;
     $('#gNegWrap').hidden = !out.neg;
@@ -95,19 +106,42 @@
   function toggle(id) {
     const it = BY_ID[id], c = CAT[it.cat], cur = st.sel[c.k] || [];
     if (c.k === 'presets') {
+      // 再點一次只取消模板標記，保留已經微調好的設定
+      if (cur.includes(id)) { st.sel.presets = []; save(); renderAll(); toast('已取消模板標記，其他設定都保留'); return; }
       // 套用模板：把模板內的選擇覆蓋到各類別
-      const on = cur.includes(id);
-      st.sel = {};
-      if (!on) { st.sel.presets = [id]; it.picks.forEach(pid => { const p = BY_ID[pid]; if (!p) return; const pc = CAT[p.cat]; st.sel[pc.k] = pc.mode === 'multi' ? [...(st.sel[pc.k] || []), pid] : [pid]; }); if (it.subject && (!st.subject || st.subject === G.sampleSubject)) { st.subject = it.subject; $('#gSubject').value = it.subject; } toast(`已套用「${it.name}」，可以再逐類微調`); }
-    } else if (c.mode === 'multi') st.sel[c.k] = cur.includes(id) ? cur.filter(x => x !== id) : [...cur, id];
-    else st.sel[c.k] = cur[0] === id ? [] : [id];
+      st.sel = { presets: [id] };
+      it.picks.forEach(pid => { const p = BY_ID[pid]; if (!p) return; const pc = CAT[p.cat]; st.sel[pc.k] = pc.mode === 'multi' ? [...(st.sel[pc.k] || []), pid] : [pid]; });
+      // 主體是空的、範例或其他模板帶進來的，才換成這個模板的主體；自己打的不動
+      const s0 = st.subject.trim();
+      if (it.subject && (!s0 || s0 === G.sampleSubject || PRESET_SUBJECTS.has(s0))) { st.subject = it.subject; $('#gSubject').value = it.subject; }
+      toast(`已套用「${it.name}」，可以再逐類微調`);
+    } else {
+      const adding = !cur.includes(id);
+      if (c.mode === 'multi') st.sel[c.k] = adding ? [...cur, id] : cur.filter(x => x !== id);
+      else st.sel[c.k] = cur[0] === id ? [] : [id];
+      if (adding) {
+        // 互斥的選項（例如「不要文字」和「中文字清楚」）：選了一個就取消另一個
+        const off = [];
+        EXCL.filter(g => g.includes(id)).forEach(g => g.forEach(o => { if (o === id || !BY_ID[o]) return; const k = BY_ID[o].cat; if ((st.sel[k] || []).includes(o)) { st.sel[k] = st.sel[k].filter(x => x !== o); off.push(BY_ID[o].name); } }));
+        if (off.length) toast(`已取消「${off.join('、')}」，因為和「${it.name}」互相衝突`);
+      }
+    }
     save(); renderAll();
   }
 
   const toast = msg => { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 1900); };
+  // 同步先用 execCommand 複製（在點擊當下最可靠），再補上 Clipboard API
+  function copyNow(text) {
+    let ok = false;
+    try { const ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0'; document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); ta.remove(); } catch (e) { }
+    const api = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(text).then(() => true, () => false) : Promise.resolve(false);
+    return { ok, api };
+  }
   async function copy(text, msg) {
-    try { await navigator.clipboard.writeText(text); } catch (e) { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
-    toast(msg || '已複製');
+    const r = copyNow(text);
+    const ok = r.ok || await r.api;
+    toast(ok ? (msg || '已複製') : '複製失敗，請到下方提示詞框手動選取複製');
+    return ok;
   }
 
   /* ---------- 事件 ---------- */
@@ -116,6 +150,7 @@
   $('#gGrid').addEventListener('click', e => { const z = e.target.closest('.g-zoom'); if (z) { e.stopPropagation(); zoom(z.dataset.zoom, z.dataset.cap); return; } const b = e.target.closest('.g-card'); if (b) toggle(b.dataset.id); });
   $('#gGrid').addEventListener('keydown', e => { const z = e.target.closest('.g-zoom'); if (z && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.stopPropagation(); zoom(z.dataset.zoom, z.dataset.cap); } });
   $('#gHead').addEventListener('click', e => { const b = e.target.closest('[data-set]'); if (!b) return; st.set = b.dataset.set; save(); renderGrid(); });
+  $('#gDock').addEventListener('click', e => { const b = e.target.closest('[data-drop]'); if (!b) return; b.dataset.drop.split(',').forEach(id => { const k = BY_ID[id] && BY_ID[id].cat; if (k) st.sel[k] = (st.sel[k] || []).filter(x => x !== id); }); save(); renderAll(); toast('已移除不需要的設定'); });
   $('#gChips').addEventListener('click', e => { const b = e.target.closest('.g-chip button'); if (!b) return; const id = b.parentNode.dataset.id, c = BY_ID[id].cat; st.sel[c] = (st.sel[c] || []).filter(x => x !== id); save(); renderAll(); });
   $('#gSubject').value = st.subject;
   $('#gSubject').addEventListener('input', e => { st.subject = e.target.value; save(); renderDock(); });
@@ -123,7 +158,12 @@
   $('#gCopyZh').onclick = () => copy(build().zh, '已複製中文提示詞');
   $('#gCopyNeg').onclick = () => copy(build().neg, '已複製負面提示詞');
   const chatText = () => G.chat(build(), st.subject.trim(), k => (st.sel[k] || []).map(id => BY_ID[id]));
-  const openWith = (url, name) => { window.open(url, '_blank', 'noopener'); copy(chatText(), `已複製，到 ${name} 輸入框貼上送出`); };
+  const openWith = (url, name) => {
+    if (!st.subject.trim()) { toast('先在「畫面主體」寫下想要的內容'); $('#gSubject').focus(); return; }
+    const r = copyNow(chatText());   // 先複製，再開新分頁（開分頁後頁面失焦，可能就複製不到）
+    window.open(url, '_blank', 'noopener');
+    Promise.resolve(r.ok || r.api).then(ok => toast(ok ? `已複製，到 ${name} 輸入框貼上（⌘V／Ctrl+V）送出` : '沒有複製成功，請回到這頁用「複製英文提示詞」再試一次'));
+  };
   $('#gToGPT').onclick = () => openWith('https://chatgpt.com/', 'ChatGPT');
   $('#gToGemini').onclick = () => openWith('https://gemini.google.com/app', 'Gemini');
   window.GEN_APP_CHAT = chatText;
