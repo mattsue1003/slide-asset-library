@@ -140,6 +140,8 @@
     I('q-clean-bg', '乾淨背景', 'clean uncluttered background', '主體更突出', T('#ffffff', '#444', 'CLEAN')),
     I('q-white-bg', '純白背景', 'isolated on pure white background', '去背、商品、貼圖', T('#ffffff', '#111', 'WHITE')),
     I('q-text-space', '預留文字空間', 'empty space for text on the left side', '方便放標題', D('<rect width="160" height="100" fill="#f3eee6"/><rect x="12" y="30" width="56" height="8" rx="3" fill="#d1c4b1"/><rect x="12" y="44" width="40" height="6" rx="3" fill="#e2d7c7"/><circle cx="118" cy="56" r="20" fill="#c2410c"/>')),
+    I('q-zh-text', '中文字清楚正確', 'large, clear, correctly written Traditional Chinese text', '衛教單張、海報要放字時', T('#eef6f1', '#1f6f4a', '中文')),
+    I('q-handout', '單張版面', 'printable handout layout: title on top, three sections with simple icons, generous margins', '衛教單張、說明單', D('<rect width="160" height="100" fill="#f3eee6"/><rect x="52" y="6" width="56" height="88" rx="3" fill="#fff" stroke="#d1c4b1"/><rect x="60" y="13" width="40" height="7" rx="2" fill="#1f6f4a"/><circle cx="66" cy="32" r="5" fill="#c2410c"/><rect x="75" y="30" width="26" height="4" rx="2" fill="#d1c4b1"/><circle cx="66" cy="48" r="5" fill="#3fa58b"/><rect x="75" y="46" width="26" height="4" rx="2" fill="#d1c4b1"/><circle cx="66" cy="64" r="5" fill="#e0a33a"/><rect x="75" y="62" width="26" height="4" rx="2" fill="#d1c4b1"/><rect x="60" y="76" width="40" height="12" rx="2" fill="#e8f2ec"/>')),
     I('q-no-text', '畫面不要文字', 'no text, no letters, no watermark', '避免 AI 亂寫字', T('#fdecec', '#b91c1c', 'NO TEXT')),
     I('q-natural-skin', '自然膚質', 'natural skin texture, realistic faces', '人像不塑膠感', T('#f7e7dc', '#8a4b33', 'SKIN')),
     I('q-hands', '手部正確', 'anatomically correct hands', '避免多指、怪手', T('#f3eee6', '#5a4636', 'HANDS')),
@@ -162,6 +164,7 @@
 
   items.presets = [
     Object.assign(I('ps-health-ed', '衛教插圖', 'health education illustration preset', '親切易懂的衛教畫面', { t: 'preset', c: ['#3fa58b', '#1f6f8b'] }), { picks: ['st-flat', 'sh-ms', 'an-eye', 'cp-negative', 'lt-soft', 'cl-muted', 'md-warm', 'ar-16-9', 'q-clean-bg', 'q-no-text', 'ng-text', 'ng-fingers', 'ng-creepy'], subject: '一位護理師親切地教阿伯量血壓' }),
+    Object.assign(I('ps-handout', '衛教單張', 'health education handout preset', '直式 A4，標題＋三個重點＋插圖', { t: 'preset', c: ['#2f8f6b', '#1f5f4a'] }), { picks: ['st-flat', 'cp-center', 'lt-soft', 'cl-pastel', 'md-warm', 'ar-3-4', 'q-handout', 'q-zh-text', 'q-clean-bg', 'ng-watermark'], subject: '糖尿病健康飲食衛教單張，標題「糖尿病 健康飲食」，三個重點：「定時定量吃飯」「多吃蔬菜」「少喝含糖飲料」，搭配長者享用健康餐的小插圖' }),
     Object.assign(I('ps-elder-portrait', '長者溫馨人像', 'warm elder portrait preset', '自然真實、有溫度的人像', { t: 'preset', c: ['#c98b4e', '#8a5a32'] }), { picks: ['st-film', 'sh-mcu', 'an-eye', 'cp-thirds', 'lt-window', 'cl-warm', 'ln-85', 'ln-bokeh', 'md-warm', 'ar-4-5', 'q-natural-skin', 'q-elder', 'q-asian', 'ng-face', 'ng-plastic'], subject: '一位滿頭白髮的阿嬤在窗邊微笑，手上拿著老照片' }),
     Object.assign(I('ps-slide-bg', '簡報背景圖', 'presentation background preset', '留白給文字的乾淨背景', { t: 'preset', c: ['#4a6a85', '#1f2d3a'] }), { picks: ['st-photo', 'sh-wide', 'cp-negative', 'lt-soft', 'cl-muted', 'ln-bokeh', 'md-calm', 'ar-16-9', 'q-text-space', 'q-no-text', 'ng-text', 'ng-cluttered'], subject: '清晨的社區公園，遠處有幾位長者在散步' }),
     Object.assign(I('ps-social', '社群貼文主視覺', 'social media key visual preset', '吸睛、適合 IG／FB', { t: 'preset', c: ['#e8622c', '#c2410c'] }), { picks: ['st-3d-cute', 'sh-ms', 'cp-center', 'lt-studio', 'cl-vivid', 'md-joy', 'ar-1-1', 'q-clean-bg', 'q-text-space', 'ng-text', 'ng-watermark'], subject: '一顆開心的藥丸角色舉著「按時吃藥」的小旗子' }),
@@ -180,6 +183,10 @@
     sampleSubject: '一位微笑的阿嬤在社區公園打太極',
     samples: ['lt-backlit','lt-blue','lt-candle','lt-dappled','lt-golden','lt-hard','lt-highkey','lt-lowkey','lt-neon','lt-overcast','lt-rembrandt','lt-silhouette','lt-soft','lt-studio','lt-window','st-3d-cute','st-cinematic','st-clay','st-collage','st-colored-pencil','st-documentary','st-editorial','st-film','st-flat','st-icon','st-ink','st-isometric','st-japanese','st-line','st-oil','st-paper-cut','st-photo','st-picture-book','st-product','st-retro-poster','st-risograph','st-watercolor'],
     sampleBy: { styles: 'ChatGPT 生成', lighting: 'Nano Banana 生成' },
+    sampleSets: [
+      { k: 'person', n: '人物', cats: ['styles', 'lighting'] },
+      { k: 'handout', n: '糖尿病衛教單張', cats: ['styles'], dir: 'samples/handout', fit: 'contain', ids: ['st-3d-cute','st-cinematic','st-clay','st-collage','st-colored-pencil','st-documentary','st-editorial','st-film','st-flat','st-icon','st-ink','st-isometric','st-japanese','st-line','st-oil','st-paper-cut','st-photo','st-picture-book','st-product','st-retro-poster','st-risograph','st-watercolor'] },
+    ],
     cats: [
       { k: 'presets', n: '用途模板', pv: 'preset', mode: 'single', d: '一鍵套用整組設定，再逐類微調' },
       { k: 'styles', n: '畫風', pv: 'tag', mode: 'single', d: '整張圖的視覺風格' },

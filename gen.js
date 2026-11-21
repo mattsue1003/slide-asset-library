@@ -13,7 +13,7 @@
   const BY_ID = {};
   G.cats.forEach(c => G.items[c.k].forEach(it => { it.cat = c.k; BY_ID[it.id] = it; }));
   const CAT = Object.fromEntries(G.cats.map(c => [c.k, c]));
-  let st = store.get({ subject: G.sampleSubject, sel: {}, tab: G.cats[0].k });
+  let st = store.get({ subject: G.sampleSubject, sel: {}, tab: G.cats[0].k, set: 'person' });
   Object.keys(st.sel).forEach(k => { st.sel[k] = (st.sel[k] || []).filter(id => BY_ID[id]); });
   const save = () => store.set(st);
 
@@ -23,9 +23,23 @@
   const CAM = (x, y, r) => `<g transform="translate(${x} ${y}) rotate(${r || 0})"><rect x="-9" y="-6" width="14" height="12" rx="2" fill="#c2410c"/><path d="M5 -4 L11 -7 V7 L5 4z" fill="#c2410c"/></g>`;
 
   const SAMPLE = new Set(G.samples || []);
+  const SETS = (G.sampleSets || []).map(s => Object.assign({ dir: 'samples', ids: G.samples || [] }, s, { has: new Set(s.ids || G.samples || []) }));
+  const setFor = cat => SETS.filter(s => s.cats.includes(cat));
+  function sampleOf(it) {
+    const list = setFor(it.cat); if (!list.length) return SAMPLE.has(it.id) ? { dir: 'samples' } : null;
+    const want = list.find(s => s.k === st.set) || list[0];
+    return want.has.has(it.id) ? want : (list.find(s => s.has.has(it.id)) || null);
+  }
   function preview(it) {
     const p = it.pv || {}, t = p.t || CAT[it.cat].pv;
-    if (SAMPLE.has(it.id)) return `<img class="g-img" src="samples/${it.id}.webp" alt="${esc(it.name)}範例" loading="lazy" width="480" height="320"><span class="g-src">${esc(G.sampleBy?.[it.cat] || 'AI 範例')}</span>`;
+    const sm = sampleOf(it);
+    if (sm) {
+      const src = `${sm.dir}/${it.id}.webp`, alt = `${esc(it.name)}範例${sm.n ? '（' + esc(sm.n) + '）' : ''}`;
+      const img = sm.fit === 'contain'
+        ? `<img class="g-img g-blur" src="${src}" alt="" aria-hidden="true" loading="lazy"><img class="g-img g-contain" src="${src}" alt="${alt}" loading="lazy">`
+        : `<img class="g-img" src="${src}" alt="${alt}" loading="lazy" width="480" height="320">`;
+      return `${img}<span class="g-src">${esc(G.sampleBy?.[it.cat] || 'AI 範例')}</span><span class="g-zoom" role="button" tabindex="0" data-zoom="${src}" data-cap="${esc(it.name)}" aria-label="放大看${esc(it.name)}範例">放大</span>`;
+    }
     if (t === 'filter') return `<div class="g-scene" style="filter:${p.filter || 'none'}">${SCENE}${p.overlay ? `<i class="g-ov" style="background:${p.overlay};mix-blend-mode:${p.blend || 'soft-light'}"></i>` : ''}</div>`;
     if (t === 'fx') return `<div class="g-scene">${SCENE}<i class="g-ov fx-${it.id}" style="${esc(p.ov || '')}"></i></div>`;
     if (t === 'light') return `<div class="g-light" style="background:${p.bg}"><i style="${p.ball}"></i></div>`;
@@ -61,7 +75,9 @@
   }
   function renderGrid() {
     const c = CAT[st.tab], items = G.items[c.k], sel = st.sel[c.k] || [];
-    $('#gHead').innerHTML = `<h1>${c.n}</h1><p>${esc(c.d)}<span class="g-mode">${c.mode === 'multi' ? '可複選' : '單選，點同一張可取消'}</span></p>`;
+    const sets = setFor(c.k);
+    const sw = sets.length > 1 ? `<div class="g-sets" role="group" aria-label="範例圖主題"><span>範例圖</span>${sets.map(s => `<button type="button" data-set="${s.k}" aria-pressed="${(sets.find(x => x.k === st.set) || sets[0]).k === s.k}">${esc(s.n)}</button>`).join('')}</div>` : '';
+    $('#gHead').innerHTML = `<h1>${c.n}</h1><p>${esc(c.d)}<span class="g-mode">${c.mode === 'multi' ? '可複選' : '單選，點同一張可取消'}</span></p>${sw}`;
     $('#gGrid').className = 'g-grid gg-' + (c.pv || 'tag');
     $('#gGrid').innerHTML = items.map((it, i) => `<button class="g-card ${sel.includes(it.id) ? 'sel' : ''}" data-id="${it.id}"><div class="g-pv">${preview(it)}</div><div class="g-meta"><b><span>${String(i + 1).padStart(2, '0')}</span>${esc(it.name)}</b><small>${esc(it.desc || '')}</small><code>${esc(it.en)}</code></div></button>`).join('');
   }
@@ -95,7 +111,11 @@
   }
 
   /* ---------- 事件 ---------- */
-  $('#gGrid').addEventListener('click', e => { const b = e.target.closest('.g-card'); if (b) toggle(b.dataset.id); });
+  const zoom = (src, cap) => { let z = $('#gLight'); if (!z) { z = document.createElement('div'); z.id = 'gLight'; z.className = 'g-light-box'; z.innerHTML = '<figure><img alt=""><figcaption></figcaption></figure><button type="button" aria-label="關閉">✕</button>'; document.body.appendChild(z); z.addEventListener('click', () => z.classList.remove('on')); } $('img', z).src = src; $('img', z).alt = cap + '範例'; $('figcaption', z).textContent = cap; z.classList.add('on'); };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#gLight')?.classList.remove('on'); });
+  $('#gGrid').addEventListener('click', e => { const z = e.target.closest('.g-zoom'); if (z) { e.stopPropagation(); zoom(z.dataset.zoom, z.dataset.cap); return; } const b = e.target.closest('.g-card'); if (b) toggle(b.dataset.id); });
+  $('#gGrid').addEventListener('keydown', e => { const z = e.target.closest('.g-zoom'); if (z && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.stopPropagation(); zoom(z.dataset.zoom, z.dataset.cap); } });
+  $('#gHead').addEventListener('click', e => { const b = e.target.closest('[data-set]'); if (!b) return; st.set = b.dataset.set; save(); renderGrid(); });
   $('#gChips').addEventListener('click', e => { const b = e.target.closest('.g-chip button'); if (!b) return; const id = b.parentNode.dataset.id, c = BY_ID[id].cat; st.sel[c] = (st.sel[c] || []).filter(x => x !== id); save(); renderAll(); });
   $('#gSubject').value = st.subject;
   $('#gSubject').addEventListener('input', e => { st.subject = e.target.value; save(); renderDock(); });
