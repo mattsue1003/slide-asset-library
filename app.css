@@ -250,3 +250,28 @@ textarea#deckSrc{width:100%;min-height:340px;margin-top:12px;padding:12px;border
   .pk-acts{flex-wrap:nowrap;overflow-x:auto}
   .pk-acts .btn{flex:none}
 }
+
+/* 動態字預覽 */
+.pv.ktpv,.modal-pv.ktpv{background:#14161b;padding:0}
+.pv.ktpv .kt-host{position:absolute;inset:0}
+.modal-pv.ktpv .kt-host{position:relative;width:100%;aspect-ratio:16/9}
+
+/* 分類頁上方固定的工具列：你的字、暫停、分組（參考「字會動 64 式」的輸入列） */
+.cat-bar{position:sticky;top:61px;z-index:15;display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 -26px 18px;padding:10px 26px;background:color-mix(in srgb,var(--c-bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--c-line)}
+.cat-bar .chips{margin:0;flex-basis:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.cat-bar .chips::-webkit-scrollbar{display:none}
+.cat-bar .chip{flex:none}
+.cat-text{flex:1 1 320px;display:flex;align-items:center;gap:10px;min-width:0;height:40px;padding:0 12px;border-radius:11px;background:var(--c-panel);border:1.5px solid var(--c-line)}
+.cat-text:focus-within{border-color:var(--c-brand)}
+.cat-text span{flex:none;font-weight:800;font-size:13px;color:var(--c-brand)}
+.cat-text input{flex:1;min-width:0;border:0;outline:0;background:none;font:inherit;font-size:15px;color:var(--c-ink)}
+
+/* 卡片編號、英文名 */
+.meta{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:baseline}
+.meta .no{grid-row:span 3;align-self:start;padding-top:1px;font-weight:900;font-size:20px;line-height:1;color:var(--c-brand);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.meta b .en{margin-left:8px;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--c-mute)}
+.meta p{grid-column:2}
+
+/* 詳細視窗：上一個／下一個 */
+.m-nav{display:inline-flex;align-items:center;gap:8px;margin-left:auto;font-size:13px}
+@media (max-width:820px){.cat-bar{margin:0 -16px 16px;padding:10px 16px;top:57px}}

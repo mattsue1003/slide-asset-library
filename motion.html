@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>動態字影片素材庫</title>
+<meta name="description" content="64 種會動的中文字：換成你的字、選比例和底色（含綠幕），直接錄成影片檔，或複製指令請 AI 做出同樣的動態。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap">
+<link rel="stylesheet" href="app.css?v=10">
+<link rel="stylesheet" href="gen.css?v=7">
+<link rel="stylesheet" href="motion.css?v=2">
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="index.html"><span class="logo-mark">S</span><span>動態字影片素材庫</span></a>
+  <nav class="g-nav" aria-label="素材庫切換"><a href="index.html">簡報素材</a><a href="image.html">圖片生成</a><a href="video.html">影片生成</a><a href="motion.html" class="on">動態字影片</a></nav>
+</header>
+
+<div class="mo-wrap">
+  <section class="mo-head">
+    <h1>動態字影片素材庫 <small id="moCount">64 式</small></h1>
+    <p>每一格都是即時跑的動畫。在下面輸入你的字，64 種動態會一起換；點任一格放大，選比例和底色，按「錄成影片」就能下載影片檔，放進剪映、CapCut 或 PowerPoint。選綠幕底，剪輯時做色度去背，字就能疊在你的影片上。</p>
+  </section>
+
+  <div class="mo-bar" id="moBar">
+    <label class="mo-words"><span>你的字</span><input id="moWords" type="text" maxlength="120" placeholder="例如：今晚八點 首播 不見不散（用空格分開幾個詞）" autocomplete="off"></label>
+    <button type="button" class="btn sm" id="moReset" disabled>還原範例字</button>
+    <button type="button" class="btn sm" id="moPlay" aria-pressed="true">暫停全部</button>
+    <div class="mo-groups" id="moGroups" role="tablist" aria-label="分組"></div>
+  </div>
+
+  <main id="moMain"></main>
+
+  <section class="mo-foot">
+    <h2>怎麼用</h2>
+    <ol>
+      <li><b>挑動態</b>：在上方輸入你的字，滑過 64 格找喜歡的效果，點一下放大。</li>
+      <li><b>調畫面</b>：放大後選比例（16:9 橫式、9:16 直式短影音、1:1 方形）和底色。要疊在影片上就選「綠幕」。</li>
+      <li><b>錄成影片</b>：按「錄成影片」，瀏覽器會問你要不要分享這個分頁，選「分享」後會自動錄一輪並下載。需要電腦版 Chrome 或 Edge。</li>
+      <li><b>其他方法</b>：按「全螢幕播放」再用系統的螢幕錄影（Mac 按 ⌘+Shift+5，Windows 按 Win+Alt+R）；或按「複製指令」貼給 ChatGPT、Gemini、Claude，請 AI 寫出同樣的動畫。</li>
+    </ol>
+    <p class="muted">動畫改寫自 <a href="https://github.com/pound0423/claude-animated-text" target="_blank" rel="noopener">字會動 64 式（Animated Text）</a>，MIT 授權。範例字和範例歌詞也來自原專案。</p>
+  </section>
+</div>
+
+<dialog class="mo-dlg" id="moDlg" aria-labelledby="moDlgName">
+  <div class="mo-dlg-in">
+    <div class="mo-dlg-h"><span class="no" id="moDlgNo"></span><h2 id="moDlgName"></h2><span class="en" id="moDlgEn"></span><button type="button" class="btn sm ghost x" id="moClose">關閉</button></div>
+    <div class="mo-dlg-stage" id="moBigWrap"><div class="mo-stage big" id="moBig"></div><div class="mo-rec" id="moRecBadge" hidden><i></i><span>錄影中</span></div></div>
+    <div class="mo-dlg-c">
+      <div class="grp"><span>比例</span><div class="seg" id="moRatio"><button type="button" data-r="16:9" aria-pressed="true">16:9</button><button type="button" data-r="9:16" aria-pressed="false">9:16</button><button type="button" data-r="1:1" aria-pressed="false">1:1</button></div></div>
+      <div class="grp"><span>底色</span><div class="sw" id="moScheme"></div></div>
+      <div class="grp"><span>長度</span><select id="moLen" aria-label="影片長度"></select></div>
+      <div class="nav"><button type="button" class="btn sm" id="moPrev" aria-label="上一式">← 上一式</button><button type="button" class="btn sm" id="moNext" aria-label="下一式">下一式 →</button></div>
+    </div>
+    <div class="mo-dlg-a">
+      <button type="button" class="btn primary" id="moRecord">錄成影片</button>
+      <button type="button" class="btn" id="moFull">全螢幕播放</button>
+      <button type="button" class="btn" id="moCopy">複製指令（給 AI）</button>
+      <a class="btn" id="moSample" target="_blank" rel="noopener">下載範例影片</a>
+    </div>
+    <p class="mo-msg" id="moMsg" role="status"></p>
+    <details class="mo-pr"><summary>這一式的指令</summary><pre id="moPrompt"></pre></details>
+    <p class="hint">鍵盤 ← → 換上一式、下一式。範例影片是原作者用範例字預先輸出的 1920×1080 MP4；錄成影片則會用你的字、比例和底色。</p>
+  </div>
+</dialog>
+<div class="toast" id="toast"></div>
+
+<script src="kinetic.js?v=1"></script>
+<script src="motion.js?v=2"></script>
+<script src="https://mattsue1003.github.io/oth-report-button/report.js" data-site="簡報素材庫" defer></script>
+<script>
+window.addEventListener('load',function(){
+  (function shrink(n){
+    var host=document.querySelector('[data-oth-report]');
+    if(!host||!host.shadowRoot){if(n<20)setTimeout(function(){shrink(n+1)},300);return}
+    var s=document.createElement('style');
+    s.textContent='.fab{left:14px!important;right:auto!important;bottom:14px!important;width:34px!important;height:34px!important;min-width:0!important;padding:0!important;gap:0!important;justify-content:center!important;border-radius:50%!important;overflow:hidden!important;font-size:0!important;white-space:nowrap!important;opacity:.75}.fab svg{width:16px!important;height:16px!important;flex:none;margin:0!important}@media (hover:hover){.fab:hover{width:auto!important;padding:0 14px!important;gap:6px!important;font-size:13px!important;border-radius:99px!important;opacity:1}}';
+    host.shadowRoot.appendChild(s);
+  })(0);
+});
+</script>
+</body>
+</html>
